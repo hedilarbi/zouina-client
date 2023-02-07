@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "421506315435",
+    "project_id": "zouina-9113e",
+    "storage_bucket": "zouina-9113e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421506315435:android:a09907760a9113b205b3ee",
+        "android_client_info": {
+          "package_name": "com.hedilarbi.zouina"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421506315435-uf6t2f8ctl16s9g8gttja8unr121m8q7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUlRMobmtsH0tyfBG2t9-RYHsV38kX9UY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421506315435-uf6t2f8ctl16s9g8gttja8unr121m8q7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
