@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Dimensions, Animated } from "react-native";
+import {
+  Dimensions,
+  Animated,
+  Alert,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import mime from "mime";
 
@@ -19,6 +25,7 @@ import {
 const { width } = Dimensions.get("window");
 
 const ProfileSetupScreen = ({ navigation }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [slideAnimValue] = useState(new Animated.Value(0));
   const [image, setImage] = useState(null);
@@ -53,6 +60,7 @@ const ProfileSetupScreen = ({ navigation }) => {
   };
 
   const updateProfile = async () => {
+    setIsLoading(true);
     const formdata1 = new FormData();
     if (image) {
       formdata1.append("file", {
@@ -127,12 +135,21 @@ const ProfileSetupScreen = ({ navigation }) => {
 
         dispatch(setData(data.data));
         dispatch(setUser(user));
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        Alert.alert(err.message);
+        setIsLoading(false);
+      });
   };
 
   return (
     <SafeAreaView className="flex-row flex-1 bg-white">
+      {isLoading && (
+        <View className="absolute top-0 left-0 h-full w-full z-50 justify-center items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      )}
       <SetName
         image={image}
         setImage={setImage}

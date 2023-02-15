@@ -148,7 +148,7 @@ const PersonalInfo = () => {
           </TouchableOpacity>
           {show && (
             <RNDateTimePicker
-              value={formFields.birthday}
+              value={formFields.birthday || new Date()}
               mode="date"
               onChange={onDateSelected}
             />

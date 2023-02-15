@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { Dimensions, Animated, Alert } from "react-native";
+import {
+  Dimensions,
+  Animated,
+  Alert,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const { width } = Dimensions.get("window");
 import mime from "mime";
@@ -13,6 +19,7 @@ import { selectUser, setUser } from "../../slices/userSlice";
 const ProfileSetupScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [slideAnimValue] = useState(new Animated.Value(0));
+  const [isLoading, setIsLoading] = useState(false);
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
@@ -41,6 +48,7 @@ const ProfileSetupScreen = () => {
   };
 
   const updateProfile = async () => {
+    setIsLoading(true);
     const formdata = new FormData();
     if (image) {
       formdata.append("file", {
@@ -72,14 +80,21 @@ const ProfileSetupScreen = () => {
       const data = await response.json();
 
       dispatch(setUser(data));
-      //navigation.navigate("MainNavigator");
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       Alert.alert(err.message);
     }
   };
 
   return (
     <SafeAreaView className="flex-row flex-1 bg-white">
+      {isLoading && (
+        <View className="absolute w-full h-full justify-center items-center z-50 ">
+          <ActivityIndicator size="large" />
+        </View>
+      )}
+
       <SetName
         image={image}
         setImage={setImage}

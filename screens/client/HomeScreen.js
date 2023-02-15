@@ -9,7 +9,7 @@ import axios from "axios";
 import CategoryCard from "../../components/client/CategoryCard";
 import * as Notifications from "expo-notifications";
 import OnPrestationBanner from "../../components/client/OnPrestationBanner";
-import { deleteItemAsync, getItemAsync } from "expo-secure-store";
+import { getItemAsync } from "expo-secure-store";
 import { useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
@@ -57,14 +57,16 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        Notifications.dismissNotificationAsync(notification.identifier);
+        //Notifications.dismissNotificationAsync(notification.identifier);
+        Notifications.dismissAllNotificationsAsync();
         navigation.push("Home");
       });
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        Notifications.dismissNotificationAsync(
-          response.notification.identifier
-        );
+        Notifications.dismissAllNotificationsAsync();
+        // Notifications.dismissNotificationAsync(
+        //   response.notification.identifier
+        // );
       });
     return () => {
       Notifications.removeNotificationSubscription(

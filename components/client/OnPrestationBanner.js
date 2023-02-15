@@ -31,8 +31,10 @@ export default function OnPrestationBanner({ prestationId }) {
     if (data.review_status === false) {
       setModalVisible(true);
     }
-    if (data.state === "accepted") {
-      setMessage("Temps estimeé 20 min ");
+    if (data.state === "accepted" && data.type === "Schedual") {
+      setMessage("vous avez une réservation");
+    } else if (data.state === "accepted" && data.type === "Immediately") {
+      setMessage("Votre professionelle est en route");
     }
   };
 

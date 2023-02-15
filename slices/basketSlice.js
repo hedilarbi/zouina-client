@@ -19,10 +19,14 @@ export const basketSlice = createSlice({
 
       newBasket = state.services.splice(index, 1);
     },
+    clearBasket: (state) => {
+      state.services = [];
+    },
   },
 });
 
-export const { addToBasket, removeFromBasket } = basketSlice.actions;
+export const { addToBasket, removeFromBasket, clearBasket } =
+  basketSlice.actions;
 
 export const selectBasketServices = (state) => state.basket.services;
 export const selectBasketServicesWithID = (state, id) =>

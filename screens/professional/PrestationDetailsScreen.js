@@ -33,7 +33,7 @@ const PrestationDetailsScreen = ({ route }) => {
   }, []);
   if (isLoading) {
     return (
-      <View className="absolute w-full h-full justify-center items-center z-50 ">
+      <View className="flex-1 justify-center items-center z-50 ">
         <ActivityIndicator size="large" />
       </View>
     );

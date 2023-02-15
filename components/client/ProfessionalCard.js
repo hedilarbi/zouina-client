@@ -13,6 +13,8 @@ const ProfessionalCard = ({
   type,
   date,
   time,
+  distance,
+  duration,
 }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -27,14 +29,28 @@ const ProfessionalCard = ({
   };
   return (
     <View className=" bg-white mb-2 p-4 flex-row flex-1  rounded-md">
-      <Image
-        source={{
-          uri: user.image,
-        }}
-        className="h-32 w-28 rounded-md"
-      />
-      <View className="ml-4 justify-between">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-lg">
+      <View className="h-32 w-28 bg-pr rounded-md justify-center items-center">
+        {user.image ? (
+          <Image
+            source={{
+              uri: user.image,
+            }}
+            className="flex-1 rounded-md"
+          />
+        ) : (
+          <Text
+            className="capitalize text-white text-4xl"
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+          >
+            {user.full_name[0]}
+          </Text>
+        )}
+      </View>
+      <View className="ml-4 justify-between ">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-lg "
+        >
           {user.full_name}
         </Text>
         <View className="flex-row space-x-3 ">
@@ -67,7 +83,7 @@ const ProfessionalCard = ({
               style={{ fontFamily: "Montserrat-Medium" }}
               className="text-sm"
             >
-              5 Km
+              {distance}
             </Text>
           </View>
         </View>

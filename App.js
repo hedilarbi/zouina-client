@@ -24,17 +24,21 @@ export default function App() {
   });
 
   const RootNavigation = () => {
-    const userToken = useSelector(selectToken);
-    const { account_type } = useSelector(selectUser);
     const dispatch = useDispatch();
+    const { account_type } = useSelector(selectUser);
+    const token = useSelector(selectToken);
 
     async function restoreToken() {
       try {
-        const token = await getItemAsync("token");
-        if (token != null) {
-          const { data } = await getUserByToken(token);
+        const userToken = await getItemAsync("token");
+
+        if (userToken != null) {
+          const { data } = await getUserByToken(userToken);
+
           if (data) {
-            dispatch(setUserDataToken({ user: data.user, data, token }));
+            dispatch(
+              setUserDataToken({ user: data.user, data, token: userToken })
+            );
           }
           setIsloading(false);
         } else {
@@ -42,6 +46,7 @@ export default function App() {
         }
       } catch (error) {
         Alert.alert("Oops something went wrong, try again later");
+        setIsloading(false);
       }
     }
 
@@ -52,13 +57,14 @@ export default function App() {
     if (!fontsLoaded || isLoading) {
       return <SplashScreen />;
     }
+
     return (
       <NavigationContainer>
-        {(userToken === null || !account_type || !userToken) && (
+        {!token || !account_type ? (
           <AuthNavigator />
-        )}
-        {account_type === "client" && userToken && <ClientNavigator />}
-        {account_type === "professional" && userToken && (
+        ) : account_type === "client" ? (
+          <ClientNavigator />
+        ) : (
           <ProfessionalNavigator />
         )}
       </NavigationContainer>

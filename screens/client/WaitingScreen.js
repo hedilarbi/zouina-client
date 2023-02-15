@@ -6,11 +6,15 @@ import io from "socket.io-client";
 import { AntDesign } from "@expo/vector-icons";
 import { cancelPrestation } from "../../api/prestations";
 import { setItemAsync } from "expo-secure-store";
+import { useDispatch } from "react-redux";
+import { clearBasket } from "../../slices/basketSlice";
 
-const socket = io.connect("http://192.168.1.24:5000");
+const socket = io.connect("http://192.168.1.4:5000");
 export default function WaitingScreen({ route, navigation }) {
-  const { prestationId } = route.params;
+  const dispatch = useDispatch();
+  const { prestationId, category } = route.params;
   const savePrestationId = async () => {
+    dispatch(clearBasket());
     await setItemAsync("prestationId", prestationId);
 
     navigation.navigate("Home");
@@ -34,7 +38,7 @@ export default function WaitingScreen({ route, navigation }) {
   const handleCancelPrestation = async () => {
     try {
       await cancelPrestation(prestationId);
-      navigation.navigate("MainNavigator");
+      navigation.navigate("Appointement", { category: category });
     } catch (error) {
       Alert.alert(error.message);
     }

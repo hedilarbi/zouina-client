@@ -12,6 +12,7 @@ import {
 } from "@expo/vector-icons";
 import ProfileNavigation from "./ProfileNavigation";
 import HistoryNavigator from "./HistoryNavigator";
+import HomeNavigation from "./HomeNavigation";
 
 const ProfessionalTabNavigator = () => {
   const ProfessionalTab = createBottomTabNavigator();
@@ -21,7 +22,7 @@ const ProfessionalTabNavigator = () => {
         tabBarIcon: ({ focused }) => {
           let iconName;
           switch (route.name) {
-            case "Home":
+            case "HomeNavigation":
               iconName = focused ? (
                 <SimpleLineIcons name="magnifier" size={24} color="#FA69B7" />
               ) : (
@@ -67,8 +68,8 @@ const ProfessionalTabNavigator = () => {
       })}
     >
       <ProfessionalTab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeNavigation"
+        component={HomeNavigation}
         options={{
           headerShown: false,
         }}

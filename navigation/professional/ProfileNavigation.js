@@ -29,13 +29,29 @@ const ProfileNavigation = () => {
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
-            fontSize: 20,
+            fontSize: 15,
           },
         }}
       />
       <ProfileStack.Screen
         name="PersonalInfo"
         component={PersonalInfoScreen}
+        options={{
+          title: "Informations personnelle ",
+          headerTitleAlign: "center",
+          headerStyle: {
+            backgroundColor: "#FA69B7",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontFamily: "Montserrat-SemiBold",
+            fontSize: 15,
+          },
+        }}
+      />
+      <ProfileStack.Screen
+        name="ProfessionalInfo"
+        component={ProfessionalInfoScreen}
         options={{
           title: "Informations professionnelle",
           headerTitleAlign: "center",
@@ -45,23 +61,7 @@ const ProfileNavigation = () => {
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
-            fontSize: 20,
-          },
-        }}
-      />
-      <ProfileStack.Screen
-        name="ProfessionalInfo"
-        component={ProfessionalInfoScreen}
-        options={{
-          title: "Informations profile",
-          headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontFamily: "Montserrat-SemiBold",
-            fontSize: 20,
+            fontSize: 15,
           },
         }}
       />
@@ -77,7 +77,7 @@ const ProfileNavigation = () => {
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
-            fontSize: 20,
+            fontSize: 15,
           },
         }}
       />

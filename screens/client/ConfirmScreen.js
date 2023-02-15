@@ -64,7 +64,11 @@ const ConfirmScreen = ({ route }) => {
         date
       );
 
-      navigation.navigate("Waiting", { prestationId: data.prestation._id });
+      navigation.navigate("Waiting", {
+        prestationId: data.prestation._id,
+        category: services[0].category,
+        type,
+      });
     } catch (error) {
       Alert.alert(error.message);
     }

@@ -34,7 +34,7 @@ const Schedual = () => {
   };
 
   return (
-    <View className="flex-1 bg-white px-2  pb-10">
+    <View className="flex-1 bg-white px-2  pb-5">
       {isLoading && (
         <View className="absolute w-full h-full justify-center items-center z-50 ">
           <ActivityIndicator size="large" />
@@ -42,9 +42,6 @@ const Schedual = () => {
       )}
 
       <ScrollView className="" showsVerticalScrollIndicator={false}>
-        <Text className="text-xl" style={{ fontFamily: "Montserrat-SemiBold" }}>
-          Emploie du temps
-        </Text>
         {workingTime.map((workingDay, index) => {
           return (
             <WorkingDayConfig
@@ -56,7 +53,7 @@ const Schedual = () => {
         })}
       </ScrollView>
       <TouchableOpacity
-        className="mt-10 bg-pr py-3 rounded-md"
+        className="mt-5 bg-pr py-3 rounded-md"
         onPress={saveSchedual}
       >
         <Text

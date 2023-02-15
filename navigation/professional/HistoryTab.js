@@ -12,6 +12,7 @@ const HistoryTab = () => {
           fontFamily: "Montserrat-SemiBold",
           fontSize: 15,
           paddingTop: 15,
+          marginTop: 20,
         },
         lazy: true,
         tabBarIndicatorStyle: {

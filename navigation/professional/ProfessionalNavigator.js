@@ -13,7 +13,10 @@ import { useNavigation } from "@react-navigation/native";
 import { getItemAsync, setItemAsync } from "expo-secure-store";
 import { ActivityIndicator, View } from "react-native";
 
-const socket = io.connect("http://192.168.1.24:5000");
+import * as TaskManager from "expo-task-manager";
+
+const socket = io.connect("http://192.168.1.4:5000");
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -21,6 +24,18 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
+
+TaskManager.defineTask(
+  BACKGROUND_NOTIFICATION_TASK,
+  ({ data, error, executionInfo }) => {
+    console.log("Received a notification in the background!");
+    // Do something with the notification data
+  }
+);
+
+Notifications.registerTaskAsync(BACKGROUND_NOTIFICATION_TASK);
 
 const ProfessionalNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -70,21 +85,24 @@ const ProfessionalNavigator = () => {
 
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notification) => {
-        Notifications.dismissNotificationAsync(notification.identifier);
+        //Notifications.dismissNotificationAsync(notification.identifier);
+        Notifications.dismissAllNotificationsAsync();
       });
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
-        Notifications.dismissNotificationAsync(
-          response.notification.identifier
-        );
-        const prestationId =
-          response.notification.request.content.data.prestationId;
+        Notifications.dismissAllNotificationsAsync();
+        const { prestationId, type } =
+          response.notification.request.content.data;
 
         if (response.actionIdentifier === "details") {
           socket.emit("sendResponse", { response: "accept", prestationId });
           acceptPrestation(prestationId);
           savePrestationID(prestationId);
-          navigation.navigate("OnJob", { prestationId: prestationId });
+          if (type === "Immediately") {
+            navigation.navigate("OnJob", { prestationId: prestationId });
+          } else {
+            navigation.navigate("MainNavigator");
+          }
         } else if (response.actionIdentifier === "decline") {
           socket.emit("sendResponse", { response: "decline", prestationId });
 

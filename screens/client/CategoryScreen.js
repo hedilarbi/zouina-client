@@ -22,7 +22,6 @@ const CategoryScreen = () => {
   const servicesInBasket = useSelector(selectBasketServices);
   const getServices = async () => {
     const { data } = await getServicesByCategory(route.params.id);
-
     setCategory(data[0].category.name);
     const groupedServices = data.reduce((results, service) => {
       (results[service.sub_category] =

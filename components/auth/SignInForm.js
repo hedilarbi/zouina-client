@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Device from "expo-device";
@@ -32,6 +33,7 @@ const SignInForm = () => {
   const [formErrors, setFormerrors] = useState({});
 
   const signInClient = async () => {
+    setFormerrors({});
     const { valid, errors } = validateSignInFormInputs(
       formFields.phone_number,
 
@@ -49,7 +51,11 @@ const SignInForm = () => {
         setIsloading(false);
       } catch (err) {
         setIsloading(false);
-        setFormerrors({ server: err.response.data.message });
+        if (err.response) {
+          setFormerrors({ server: err.response.data.message });
+        } else {
+          Alert.alert("connexion problem");
+        }
       }
     }
   };

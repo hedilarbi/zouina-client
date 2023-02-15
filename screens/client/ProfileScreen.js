@@ -6,6 +6,7 @@ import { clearUserDataToken, selectUser } from "../../slices/userSlice";
 import { Entypo, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { deleteItemAsync } from "expo-secure-store";
 import { useNavigation } from "@react-navigation/native";
+import { logoutUser } from "../../api/user";
 
 const ProfileScreen = () => {
   const user = useSelector(selectUser);
@@ -13,6 +14,7 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const logout = async () => {
+    await logoutUser(user._id);
     await deleteItemAsync("token");
     dispatch(clearUserDataToken());
   };

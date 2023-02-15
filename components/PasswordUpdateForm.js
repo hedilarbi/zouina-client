@@ -56,9 +56,6 @@ const PasswordUpdateForm = () => {
       )}
 
       <View className="mt-6">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-xl">
-          Changer mot de passe
-        </Text>
         <View className="mt-4">
           <View className="mt-2">
             <Text
