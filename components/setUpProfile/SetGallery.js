@@ -13,6 +13,16 @@ const SetGallery = ({
   setImages,
 }) => {
   const pickImage = async (index) => {
+    const { status: existingStatus } =
+      await ImagePicker.getMediaLibraryPermissionsAsync();
+    if (existingStatus !== "granted") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("permissions obligatoire pour pouvoir créer une gallerie");
+        return null;
+      }
+    }
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
       selectionLimit: 2,
@@ -42,7 +52,7 @@ const SetGallery = ({
         transform: [{ translateX: slideAnimValue }],
         width: width,
       }}
-      className="py-8 px-4 justify-between space-y-8"
+      className="py-4 px-4 justify-between space-y-8"
     >
       <View className="flex-row justify-between">
         <TouchableOpacity onPress={handlePrevious}>
@@ -60,13 +70,13 @@ const SetGallery = ({
       <View>
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="text-gray-500 text-center text-xl"
+          className="text-txt text-center text-xl"
         >
           Ajouter des photos
         </Text>
         <Text
           style={{ fontFamily: "Montserrat-Medium" }}
-          className="text-gray-400 text-center text-lg"
+          className="text-txt text-center text-lg"
         >
           Ces images seront affiché dans profile
         </Text>
@@ -79,7 +89,7 @@ const SetGallery = ({
               <View
                 style={{
                   width: "30%",
-                  height: "30%",
+                  height: "35%",
                   borderStyle: "dashed",
                 }}
                 key={i}
@@ -103,14 +113,14 @@ const SetGallery = ({
                     className="absolute -bottom-2 -right-3 bg-white rounded-full"
                     onPress={() => removeImage(i)}
                   >
-                    <AntDesign name="closecircle" size={28} color="#FA69B7" />
+                    <AntDesign name="closecircle" size={28} color="#BD72C8" />
                   </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
                     className="absolute -bottom-2 -right-3 bg-white rounded-full"
                     onPress={() => pickImage(i)}
                   >
-                    <AntDesign name="pluscircle" size={28} color="#FA69B7" />
+                    <AntDesign name="pluscircle" size={28} color="#BD72C8" />
                   </TouchableOpacity>
                 )}
               </View>
@@ -125,7 +135,7 @@ const SetGallery = ({
           className="text-center text-white text-lg"
           style={{ fontFamily: "Montserrat-SemiBold" }}
         >
-          Suivant
+          SUIVANT
         </Text>
       </TouchableOpacity>
     </Animated.View>

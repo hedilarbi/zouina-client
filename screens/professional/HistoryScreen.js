@@ -1,4 +1,4 @@
-import { ScrollView, ActivityIndicator, View } from "react-native";
+import { ScrollView, ActivityIndicator, View, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -19,7 +19,11 @@ const HistoryScreen = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 

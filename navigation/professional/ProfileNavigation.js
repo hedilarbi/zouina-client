@@ -23,10 +23,8 @@ const ProfileNavigation = () => {
         options={{
           title: "Changer mot de passe",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 15,
@@ -39,10 +37,8 @@ const ProfileNavigation = () => {
         options={{
           title: "Informations personnelle ",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 15,
@@ -55,10 +51,8 @@ const ProfileNavigation = () => {
         options={{
           title: "Informations professionnelle",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 15,
@@ -71,10 +65,8 @@ const ProfileNavigation = () => {
         options={{
           title: "Emploie du temps",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 15,

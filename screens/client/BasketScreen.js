@@ -5,28 +5,23 @@ import { selectBasketServices } from "../../slices/basketSlice";
 import { useEffect } from "react";
 import BasketCard from "../../components/client/BasketCard";
 import { useNavigation } from "@react-navigation/native";
+import useGroupServicesInBasket from "../../hooks/useGroupServicesInBasket";
 
 const BasketScreen = () => {
   const navigation = useNavigation();
   const services = useSelector(selectBasketServices);
-  const [groupedServicesInBasket, setGroupedServicesInBasket] = useState([]);
-
-  const groupServicesInBasket = () => {
-    const groupedServices = services.reduce((results, service) => {
-      (results[service.id] = results[service.id] || []).push(service);
-      return results;
-    }, {});
-    setGroupedServicesInBasket(groupedServices);
-  };
-  useEffect(() => {
-    groupServicesInBasket();
-  }, [services]);
+  const groupedServicesInBasket = useGroupServicesInBasket(services);
 
   return (
     <View className=" py-2 flex-1 justify-between bg-white">
       {services.length === 0 && (
-        <View>
-          <Text>Panier Vide</Text>
+        <View className="flex-1 justify-center items-center">
+          <Text
+            className="text-txt text-lg"
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+          >
+            Panier Vide
+          </Text>
         </View>
       )}
       <ScrollView>

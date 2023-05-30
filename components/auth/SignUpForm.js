@@ -4,6 +4,8 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Device from "expo-device";
@@ -39,7 +41,6 @@ const SignUpForm = () => {
   const signUpClient = async () => {
     const { valid, errors } = validateSignUpFormInputs(
       formFields.phone_number,
-
       formFields.password,
       formFields.validate_password
     );
@@ -56,13 +57,21 @@ const SignUpForm = () => {
         setIsloading(false);
       } catch (err) {
         setIsloading(false);
-        setFormerrors({ server: err.response.data.message });
+        if (err.response) {
+          setFormerrors({ server: err.response.data.message });
+        } else {
+          Alert.alert("problème d'internet");
+        }
       }
     }
   };
 
   return (
-    <View className="w-full flex-1 justify-between py-8">
+    <ScrollView
+      className="w-full flex-1 py-8 "
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainer}
+    >
       {formErrors.server && (
         <Text className="text-center text-red-600">{formErrors.server}</Text>
       )}
@@ -77,24 +86,20 @@ const SignUpForm = () => {
       >
         Inscription
       </Text>
-      <View className="space-y-8 mt-10">
+      <View className="space-y-12 mt-10 ">
         <View>
-          <Text
-            style={{ fontFamily: "Montserrat-Medium" }}
-            className="text-white text-xl"
-          >
-            Numéro de téléphone
-          </Text>
           <TextInput
             className=" border-b-2 border-pr pt-2 text-lg text-white "
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.phone_number}
+            placeholder="Numéro de téléphone"
+            placeholderTextColor="#FFFFFF"
             keyboardType="numeric"
             onChangeText={(text) =>
               setFormFields({ ...formFields, phone_number: text })
             }
           />
-          {formErrors.phone && (
+          {formErrors.phone_number && (
             <Text
               className="text-red-400 mt-4 text-lg"
               style={{ fontFamily: "Montserrat-Medium" }}
@@ -104,16 +109,12 @@ const SignUpForm = () => {
           )}
         </View>
         <View>
-          <Text
-            style={{ fontFamily: "Montserrat-Medium" }}
-            className="text-white text-xl"
-          >
-            Mot de passe
-          </Text>
           <TextInput
             className=" border-b-2 border-pr py-2 text-lg text-white"
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.password}
+            placeholderTextColor="#FFFFFF"
+            placeholder="Mot de passe"
             secureTextEntry={true}
             onChangeText={(text) =>
               setFormFields({ ...formFields, password: text })
@@ -129,17 +130,13 @@ const SignUpForm = () => {
           )}
         </View>
         <View>
-          <Text
-            style={{ fontFamily: "Montserrat-Medium" }}
-            className="text-white text-xl"
-          >
-            confirmer mot de passe
-          </Text>
           <TextInput
             className=" border-b-2 border-pr py-2 text-lg text-white"
             style={{ fontFamily: "Montserrat-Medium" }}
+            placeholder="Confirmer mot de passe"
             value={formFields.validate_password}
             onSubmitEditing={signUpClient}
+            placeholderTextColor="#FFFFFF"
             secureTextEntry={true}
             onChangeText={(text) =>
               setFormFields({ ...formFields, validate_password: text })
@@ -205,7 +202,8 @@ const SignUpForm = () => {
           </View>
         </View>
       </View>
-      <View className="mt-4">
+
+      <View className="mt-20">
         <TouchableOpacity
           className="w-full bg-pr py-2 mt-10 rounded-md "
           onPress={signUpClient}
@@ -235,11 +233,9 @@ const SignUpForm = () => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
-
-export default SignUpForm;
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -256,10 +252,21 @@ async function registerForPushNotificationsAsync() {
       alert("Failed to get push token for push notification!");
       return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        experienceId: "@hedilarbi95/client",
+      })
+    ).data;
   } else {
     alert("Must use physical device for Push Notifications");
   }
 
   return token;
 }
+const styles = StyleSheet.create({
+  contentContainer: {
+    justifyContent: "space-between",
+  },
+});
+
+export default SignUpForm;

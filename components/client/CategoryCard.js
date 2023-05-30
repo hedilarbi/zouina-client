@@ -9,6 +9,18 @@ const CategoryCard = ({ image, name, id }) => {
     <TouchableOpacity
       className="relative mb-6  w-full h-40"
       onPress={() => navigator.navigate("Category", { name, id })}
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: 8,
+        elevation: 4,
+        shadowColor: "#000000",
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+      }}
     >
       <Image
         source={{
@@ -21,7 +33,7 @@ const CategoryCard = ({ image, name, id }) => {
         className="absolute top-0 w-full h-40 rounded-md"
       />
       <Text
-        className="absolute bottom-2 left-2 text-white text-xl"
+        className="absolute bottom-2 left-2 text-ct text-xl"
         style={{ fontFamily: "Montserrat-SemiBold" }}
       >
         {name}

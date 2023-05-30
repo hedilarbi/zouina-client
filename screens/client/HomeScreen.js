@@ -28,12 +28,10 @@ const HomeScreen = ({ navigation }) => {
 
   const notificationListener = useRef();
   const responseListener = useRef();
-  const retrievePrestationID = async () => {
-    const prestationId = await getItemAsync("prestationId");
 
-    if (prestationId) {
-      setPrestationId(prestationId);
-    }
+  const retrievePrestationID = async () => {
+    const prestation = await getItemAsync("prestationId");
+    setPrestationId(prestation);
   };
 
   const getCategories = async () => {
@@ -43,7 +41,11 @@ const HomeScreen = ({ navigation }) => {
       setCategories(data);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
   useFocusEffect(
@@ -86,9 +88,17 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView className="px-4 py-6 flex-1">
       <View className="h-28  justify-center ">
-        {prestationId && <OnPrestationBanner prestationId={prestationId} />}
+        {prestationId != null && (
+          <OnPrestationBanner prestationId={prestationId} />
+        )}
       </View>
 
+      <Text
+        className="text-txt text-3xl text-center"
+        style={{ fontFamily: "Montserrat-SemiBold" }}
+      >
+        Nos Catégories
+      </Text>
       <View className="flex-1 mt-10">
         {categories.map((category) => {
           return (

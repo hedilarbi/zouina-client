@@ -1,11 +1,20 @@
-import { View, Text, Alert, ScrollView, Image } from "react-native";
+import {
+  View,
+  Text,
+  Alert,
+  ScrollView,
+  Image,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useEffect } from "react";
-import { getPrestation } from "../../api/prestations";
-
+import { cancelPrestation, getPrestation } from "../../api/prestations";
+import { AntDesign } from "@expo/vector-icons";
 import PrestationTag from "../../components/client/PrestationTag";
 import FormatedDate from "../../components/client/FormatedDate";
-import { AntDesign } from "@expo/vector-icons";
-const PrestationDetailsScreen = ({ route }) => {
+
+import Avatar from "../../components/Avatar";
+const PrestationDetailsScreen = ({ route, navigation }) => {
   const id = route.params.id;
   const [prestation, setPrestation] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -15,28 +24,71 @@ const PrestationDetailsScreen = ({ route }) => {
       setPrestation(data);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
+
   useEffect(() => {
     getClientPrestation();
   }, []);
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
+  const handleCancelPrestation = async () => {
+    try {
+      await deleteItemAsync("prestationId");
+      await cancelPrestation(id);
+      navigation.goBack();
+    } catch (error) {
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
+    }
+  };
+
+  const showAlert = () => {
+    Alert.alert(
+      "Veuillez confirmer",
+      "Etes vous sure de vouloir annuler cette réservation?",
+      [
+        {
+          text: "Annuler",
+
+          style: "cancel",
+        },
+        { text: "Confirmer", onPress: () => handleCancelPrestation() },
+      ]
+    );
+  };
 
   return (
-    <ScrollView className="flex-1 bg-white py-4 px-2">
-      <View className=" bg-gray-100 p-4 rounded-md">
+    <ScrollView className="flex-1  py-4 px-4">
+      <View className=" bg-white p-4 rounded-md">
         {prestation.type === "Schedual" ? (
           <View className="flex-row justify-between items-center">
-            <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+            <Text
+              style={{ fontFamily: "Montserrat-SemiBold" }}
+              className="text-txt"
+            >
               Réservation
             </Text>
             <PrestationTag state={prestation.state} />
           </View>
         ) : (
-          <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+          <Text
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+            className="text-lg text-txt"
+          >
             Date et Heure
           </Text>
         )}
@@ -46,26 +98,32 @@ const PrestationDetailsScreen = ({ route }) => {
           state={prestation.state}
         />
       </View>
-      <View className="bg-gray-100 p-4 rounded-md mt-2">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+      <View className="bg-white p-4 rounded-md mt-2">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-lg text-txt"
+        >
           {prestation.services[0].service.category.name}
         </Text>
         <View className="mt-4">
           {prestation.services.map((service) => {
             return (
               <View className="flex-row mb-2" key={service._id}>
-                <Text style={{ fontFamily: "Montserrat-Medium" }}>
+                <Text
+                  style={{ fontFamily: "Montserrat-Medium" }}
+                  className="text-txt"
+                >
                   {service.quantity} x
                 </Text>
                 <Text
                   style={{ fontFamily: "Montserrat-Medium" }}
-                  className="flex-1 ml-4"
+                  className="flex-1 ml-4 text-txt"
                 >
                   {service.service.name}
                 </Text>
                 <Text
                   style={{ fontFamily: "Montserrat-Medium" }}
-                  className="ml-2"
+                  className="ml-2 text-txt"
                 >
                   {service.service.price * service.quantity} DZD
                 </Text>
@@ -74,42 +132,53 @@ const PrestationDetailsScreen = ({ route }) => {
           })}
         </View>
         <View className="mt-4">
-          <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+          <Text
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+            className="text-lg text-txt"
+          >
             Proffessionnelle
           </Text>
           <View className="flex-row items-center mt-4">
-            {prestation.professional.user.image != null ? (
-              <Image
-                source={{ uri: prestation.professional.user.image }}
-                className="h-12 w-12 rounded-full "
-              />
-            ) : (
-              <View className="bg-pr rounded-full justify-center items-center h-10 w-10 ">
-                <Text
-                  className="text-white text-xl"
-                  style={{ fontFamily: "Montserrat-SemiBold" }}
-                >
-                  {prestation.professional.user.full_name[0]}
-                </Text>
-              </View>
-            )}
+            <Avatar
+              image={prestation.professional.user.image}
+              size="small"
+              radius="full"
+            />
             <View className="ml-4">
-              <Text className="" style={{ fontFamily: "Montserrat-Medium" }}>
+              <Text
+                className="text-txt"
+                style={{ fontFamily: "Montserrat-Medium" }}
+              >
                 {prestation.professional.user.full_name}
               </Text>
               <View className="flex-row items-center">
                 <AntDesign name="star" size={18} color="gold" />
                 <Text
                   style={{ fontFamily: "Montserrat-Medium" }}
-                  className="ml-1"
+                  className="ml-1 text-txt"
                 >
-                  {prestation.professional.rating.rate}
+                  {Math.round(prestation.professional.rating.rate)}
                 </Text>
               </View>
             </View>
           </View>
         </View>
       </View>
+      {prestation.state === "accepted" && (
+        <TouchableOpacity
+          className="bg-white flex-row items-center mt-4 px-2 py-4 rounded-md"
+          onPress={showAlert}
+        >
+          <AntDesign name="closecircle" size={30} color="red" />
+
+          <Text
+            className="ml-2 text-txt"
+            style={{ fontFamily: "Montserrat-Medium" }}
+          >
+            Annuler
+          </Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 };

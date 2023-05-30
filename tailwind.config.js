@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        pr: "#FA69B7",
-        sc: "#A5BEA8",
-      },
-      fontFamily: {
-        montserrat: ["Montserrat"],
+        pr: "#BD72C8",
+        sc: "#F1D2E7",
+        ct: "#FDCB6E",
+        txt: "#4A4A4A",
+        acc: "#C6B7D",
       },
     },
   },

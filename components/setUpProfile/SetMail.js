@@ -54,12 +54,12 @@ const SetMail = ({
           <View className="">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-xl"
+              className="text-xl text-txt"
             >
               Adresse Mail
             </Text>
             <TextInput
-              className="text-base border-b border-black pt-2 mt-6"
+              className="text-base border-b border-black pt-2 mt-6 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
               value={mail}
               onChangeText={(text) => setMail(text)}
@@ -68,7 +68,7 @@ const SetMail = ({
           <View className="mt-20">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-xl"
+              className="text-xl text-txt"
             >
               Date de naissance
             </Text>
@@ -76,7 +76,7 @@ const SetMail = ({
               <TextInput
                 value={birthday.day}
                 placeholder="JJ"
-                className="text-xl py-1 px-1"
+                className="text-xl py-1 px-1 text-txt"
                 style={{ fontFamily: "Montserrat-Medium" }}
                 ref={dayInput}
                 keyboardType="numeric"
@@ -89,7 +89,7 @@ const SetMail = ({
               />
               <Text
                 style={{ fontFamily: "Montserrat-Medium" }}
-                className="text-xl"
+                className="text-xl text-pr"
               >
                 /
               </Text>
@@ -97,7 +97,7 @@ const SetMail = ({
                 value={birthday.month}
                 placeholder="MM"
                 style={{ fontFamily: "Montserrat-Medium" }}
-                className="text-xl py-1 px-1"
+                className="text-xl py-1 px-1 text-txt"
                 ref={monthInput}
                 keyboardType="numeric"
                 onChangeText={(text) => {
@@ -109,7 +109,7 @@ const SetMail = ({
               />
               <Text
                 style={{ fontFamily: "Montserrat-Medium" }}
-                className="text-xl"
+                className="text-xl text-pr"
               >
                 /
               </Text>
@@ -117,7 +117,7 @@ const SetMail = ({
                 value={birthday.year}
                 placeholder="YYYY"
                 style={{ fontFamily: "Montserrat-Medium" }}
-                className="text-xl py-1 px-1 "
+                className="text-xl py-1 px-1 text-txt "
                 ref={yearInput}
                 keyboardType="numeric"
                 onChangeText={(text) =>

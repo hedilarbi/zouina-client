@@ -16,7 +16,7 @@ const HistoryTab = () => {
         },
         lazy: true,
         tabBarIndicatorStyle: {
-          backgroundColor: "#FA69B7",
+          backgroundColor: "#BD72C8",
           height: 3,
         },
       }}
@@ -28,7 +28,7 @@ const HistoryTab = () => {
           title: "Historique",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "#FA69B7",
+            backgroundColor: "#BD72C8",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {
@@ -44,7 +44,7 @@ const HistoryTab = () => {
           title: "Reservation",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "#FA69B7",
+            backgroundColor: "#BD72C8",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {

@@ -65,12 +65,13 @@ const CategoryScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-      <ScrollView className="px-4 mb-10 pt-4 flex-1 ">
+
+      <ScrollView className="px-4  flex-1 ">
         {Object.entries(servicesList).map(([key, services]) => {
           return (
             <View key={key} className="pb-4">
               <Text
-                className="text-2xl mb-4"
+                className="text-2xl  text-txt mb-4"
                 style={{ fontFamily: "Montserrat-SemiBold" }}
               >
                 {key}

@@ -62,7 +62,11 @@ export const refusePrestation = async (id) => {
       timeout: 10000,
     });
   } catch (error) {
-    Alert.alert(error.message);
+    if (error.response) {
+      Alert.alert("Problème interne");
+    } else {
+      Alert.alert("problème internet");
+    }
   }
 };
 export const acceptPrestation = async (id) => {
@@ -71,7 +75,11 @@ export const acceptPrestation = async (id) => {
       timeout: 10000,
     });
   } catch (error) {
-    Alert.alert(error.message);
+    if (error.response) {
+      Alert.alert("Problème interne");
+    } else {
+      Alert.alert("problème internet");
+    }
   }
 };
 export const finishPrestation = async (id) => {
@@ -80,7 +88,24 @@ export const finishPrestation = async (id) => {
       timeout: 10000,
     });
   } catch (error) {
-    Alert.alert(error.message);
+    if (error.response) {
+      Alert.alert("Problème interne");
+    } else {
+      Alert.alert("problème internet");
+    }
+  }
+};
+export const professionalAtDestination = async (id) => {
+  try {
+    await axios.put(`${BASE_URL}/prestations/prestation/destination/${id}`, {
+      timeout: 10000,
+    });
+  } catch (error) {
+    if (error.response) {
+      Alert.alert("Problème interne");
+    } else {
+      Alert.alert("problème internet");
+    }
   }
 };
 

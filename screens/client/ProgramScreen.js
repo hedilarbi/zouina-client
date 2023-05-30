@@ -12,6 +12,8 @@ import { getProfessionals } from "../../api/professional";
 import { useRoute } from "@react-navigation/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../slices/userSlice";
 
 const ProgramScreen = () => {
   const [professionals, setProfessionals] = useState(null);
@@ -21,7 +23,7 @@ const ProgramScreen = () => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-
+  const { location } = useSelector(selectUser);
   const getAvailablePros = async () => {
     const searchedDate = new Date(
       date.getFullYear() +
@@ -42,15 +44,21 @@ const ProgramScreen = () => {
       try {
         const { data } = await getProfessionals(
           route.params.category,
+          location,
           date,
           time
         );
+
         setProfessionals(data);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
 
-        Alert.alert(error.message);
+        if (error.response) {
+          Alert.alert("Problème interne");
+        } else {
+          Alert.alert("problème internet");
+        }
       }
     }
   };
@@ -84,7 +92,7 @@ const ProgramScreen = () => {
               <AntDesign name="clockcircleo" size={18} color="black" />
               <Text
                 style={{ fontFamily: "Montserrat-SemiBold" }}
-                className="ml-2"
+                className="ml-2 text-txt"
               >
                 {time.getHours() < 10 ? "0" + time.getHours() : time.getHours()}{" "}
                 :
@@ -113,7 +121,7 @@ const ProgramScreen = () => {
               <AntDesign name="calendar" size={18} color="black" />
               <Text
                 style={{ fontFamily: "Montserrat-SemiBold" }}
-                className="ml-2"
+                className="ml-2 text-txt"
               >
                 {date.getDate() < 10 ? "0" + date.getDate() : date.getDate()} /{" "}
                 {date.getMonth() + 1 < 10
@@ -148,17 +156,19 @@ const ProgramScreen = () => {
       </View>
       {!professionals ? (
         <View className="flex-1 bg-white mt-2 justify-center items-center rounded-md">
-          <Text>choisir L'heure et la date</Text>
+          <Text className="text-txt text-lg">choisir L'heure et la date</Text>
         </View>
       ) : professionals.length !== 0 ? (
         <ScrollView className="flex-1 mt-4 ">
           {professionals.map((professional) => (
             <ProfessionalCard
-              user={professional.user}
-              specialities={professional.specialities}
-              rating={professional.rating}
-              id={professional._id}
-              key={professional._id}
+              user={professional.data.user}
+              specialities={professional.data.specialities}
+              rating={professional.data.rating}
+              id={professional.data._id}
+              key={professional.data._id}
+              distance={professional.metrics.distance}
+              duration={professional.metrics.duration}
               type="Schedual"
               date={date}
               time={time}
@@ -168,7 +178,7 @@ const ProgramScreen = () => {
       ) : (
         <View className="flex-1 bg-white rounded-md mt-2 justify-center items-center">
           <Text
-            className="text-center px-14"
+            className="text-center px-14 text-txt"
             style={{ fontFamily: "Montserrat-Medium" }}
           >
             Aucune Professionnelles n'est disponible, veuillez choisir une autre

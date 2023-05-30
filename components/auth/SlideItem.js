@@ -20,22 +20,22 @@ const SlideItem = ({ item }) => {
         source={item.img}
         resizeMode="cover"
         style={{ width: width, height: height }}
-        className="justify-end relative px-5"
+        className="justify-center relative px-5 "
       >
         <LinearGradient
-          colors={["transparent", "rgba(0,0,0,0.5)"]}
-          className="absolute top-0 left-0  rounded-md"
+          colors={["transparent", "rgba(0,0,0,0.6)"]}
+          className="absolute top-0 left-0  "
           style={{ width: width, height: height }}
         />
-        <View className="mb-60">
+        <View className="">
           <Text
-            className="text-white text-3xl my-4"
+            className="text-ct text-3xl my-4"
             style={{ fontFamily: "Montserrat-SemiBold" }}
           >
             {item.title}
           </Text>
           <Text
-            className="my-4 text-white text-lg"
+            className="my-4 text-white text-lg  "
             style={{ fontFamily: "Montserrat-Medium" }}
           >
             {item.description}

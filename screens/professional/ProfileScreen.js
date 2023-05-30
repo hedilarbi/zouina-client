@@ -1,7 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { deleteItemAsync } from "expo-secure-store";
 import React from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserDataToken, selectUser } from "../../slices/userSlice";
@@ -12,7 +19,8 @@ import {
   MaterialCommunityIcons,
   FontAwesome,
 } from "@expo/vector-icons";
-
+import { logoutUser } from "../../api/user";
+import Avatar from "../../components/Avatar";
 const ProfileScreen = () => {
   const user = useSelector(selectUser);
 
@@ -20,29 +28,34 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const logout = async () => {
-    await deleteItemAsync("token");
-    dispatch(clearUserDataToken());
+    try {
+      await deleteItemAsync("token");
+      await logoutUser(user._id);
+      dispatch(clearUserDataToken());
+    } catch (error) {
+      if (error.response) {
+        Alert.alert("Oops problème");
+      } else {
+        Alert.alert("problème de réseau");
+      }
+    }
   };
   return (
-    <SafeAreaView className="py-6 px-4 bg-white flex-1">
-      <View className="mx-auto h-32 w-32 rounded-full bg-pr justify-center">
-        {user.image ? (
-          <Image
-            source={{ uri: user.image }}
-            style={{ resizeMode: "cover" }}
-            className="flex-1 rounded-full"
-          />
-        ) : (
-          <Text
-            className="capitalize text-6xl text-center mt-3 text-white"
-            style={{ fontFamily: "Montserrat-SemiBold" }}
-          >
-            {user.full_name[0]}
-          </Text>
-        )}
+    <ScrollView
+      className="py-6 px-4 bg-white flex-1"
+      contentContainerStyle={{
+        paddingBottom: 25,
+        paddingTop: 25,
+      }}
+    >
+      <View className="mx-auto">
+        <Avatar image={user.image} size="large" radius="full" />
       </View>
       <View className="mt-12 pr-6">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-xl">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-xl text-txt"
+        >
           Paramètres du compte
         </Text>
         <View className="mt-6 space-y-4 ">
@@ -54,7 +67,7 @@ const ProfileScreen = () => {
               <FontAwesome5 name="user-alt" size={19} color="white" />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               Informations personelles
@@ -73,7 +86,7 @@ const ProfileScreen = () => {
               />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               Informations professionnelles
@@ -88,7 +101,7 @@ const ProfileScreen = () => {
               <FontAwesome name="calendar" size={21} color="white" />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               Emploie du temps
@@ -103,7 +116,7 @@ const ProfileScreen = () => {
               <FontAwesome5 name="key" size={19} color="white" />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               Changer mot de passe
@@ -115,7 +128,7 @@ const ProfileScreen = () => {
               <Ionicons name="document-text" size={22} color="white" />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               conditions d'utilisation
@@ -127,7 +140,7 @@ const ProfileScreen = () => {
               <Ionicons name="document-text" size={22} color="white" />
             </View>
             <Text
-              className="ml-2 text-base flex-1"
+              className="ml-2 text-base flex-1 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
             >
               politique de confidentialité
@@ -144,7 +157,7 @@ const ProfileScreen = () => {
             <Entypo name="log-out" size={20} color="white" />
           </View>
           <Text
-            className="ml-2 text-base flex-1"
+            className="ml-2 text-base flex-1 text-txt"
             style={{ fontFamily: "Montserrat-Medium" }}
           >
             Déconnexion
@@ -152,7 +165,7 @@ const ProfileScreen = () => {
           <Entypo name="chevron-right" size={24} color="black" />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

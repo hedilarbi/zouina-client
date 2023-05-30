@@ -29,21 +29,39 @@ const ServiceCard = ({
     dispatch(removeFromBasket({ id }));
   };
   return (
-    <View className="flex-1 flex-row bg-white p-4 rounded-md mb-4 items-center">
+    <View
+      className="flex-1 flex-row bg-white h-28 rounded-md mb-4 items-center   "
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderRadius: 8,
+        elevation: 4,
+        shadowColor: "#000000",
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowOffset: {
+          width: 0,
+          height: 4,
+        },
+      }}
+    >
       <Image
         source={{
           uri: image,
         }}
-        className="h-24 w-24 rounded-md"
+        className="h-28 w-28 rounded-tl-md rounded-bl-md"
       />
+
       <View className="ml-4">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-lg">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-lg text-txt"
+        >
           {name}
         </Text>
         <View className="flex-row  mt-1 ">
           <Text
             style={{ fontFamily: "Montserrat-Medium" }}
-            className="text-gray-500 "
+            className="text-txt"
           >
             {durationMin}-{durationMax} min
           </Text>

@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  professional: {},
+  professional: {
+    user: {},
+    id: "",
+  },
 };
 
 export const professionalSlice = createSlice({
@@ -9,7 +12,8 @@ export const professionalSlice = createSlice({
   initialState,
   reducers: {
     setProfessional: (state, action) => {
-      state.professional = action.payload;
+      state.professional.user = action.payload.user;
+      state.professional.id = action.payload.id;
     },
     clearProfessional: (state, action) => {
       state.professional = {};

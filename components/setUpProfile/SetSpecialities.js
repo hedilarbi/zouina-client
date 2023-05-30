@@ -25,14 +25,14 @@ const SetSpecialities = ({
       <View className="flex-1 mt-4 ">
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="text-center text-gray-500 text-xl"
+          className="text-center text-txt text-xl"
         >
           Selectionner votre/vos spécialité(s)
         </Text>
         <View className="flex-row  flex-wrap justify-self-center mt-10 space-x-4">
           {specialitiesList.map((item, index) => (
             <TouchableOpacity
-              className=""
+              className="mb-2"
               key={index}
               onPress={() => {
                 if (specialities.includes(item)) {
@@ -69,7 +69,7 @@ const SetSpecialities = ({
           className="text-center text-white text-lg"
           style={{ fontFamily: "Montserrat-SemiBold" }}
         >
-          Suivant
+          SUIVANT
         </Text>
       </TouchableOpacity>
     </Animated.View>

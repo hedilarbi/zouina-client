@@ -27,17 +27,15 @@ const ExploreNavigator = () => {
         options={({ route, navigation }) => ({
           title: route.params.name,
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,
           },
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate("Basket")}>
-              <Ionicons name="ios-basket" size={35} color="#fff" />
+              <Ionicons name="ios-basket" size={35} color="#BD72C8" />
             </TouchableOpacity>
           ),
         })}
@@ -49,10 +47,8 @@ const ExploreNavigator = () => {
         options={{
           title: "Panier",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,
@@ -62,14 +58,12 @@ const ExploreNavigator = () => {
       <ExploreStack.Screen
         name="Confirm"
         component={ConfirmScreen}
-        screenOptions={{ presentation: "modal" }}
+        // screenOptions={{ presentation: "modal" }}
         options={{
           title: "Confirmer",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,
@@ -82,10 +76,8 @@ const ExploreNavigator = () => {
         options={{
           title: "Choisir professionelle",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,
@@ -98,10 +90,8 @@ const ExploreNavigator = () => {
         screenOptions={{ presentation: "modal" }}
         options={{
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,

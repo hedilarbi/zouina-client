@@ -18,7 +18,11 @@ const SchedualHistoryScreen = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 
@@ -28,7 +32,7 @@ const SchedualHistoryScreen = () => {
 
   if (isLoading) {
     return (
-      <View className="absolute w-full h-full justify-center items-center z-50 ">
+      <View className="flex-1 justify-center items-center ">
         <ActivityIndicator size="large" />
       </View>
     );
@@ -36,7 +40,7 @@ const SchedualHistoryScreen = () => {
   return (
     <View className="flex-1 py-4 px-2">
       {prestations.length != 0 ? (
-        <ScrollView className="flex-1 bg-white px-2 py-4">
+        <ScrollView className="flex-1  px-2 py-4">
           {prestations.map((prestation) => {
             const { createdAt, _id, total_price, client, state } = prestation;
             const clientName = client.user.full_name;
@@ -46,6 +50,7 @@ const SchedualHistoryScreen = () => {
             return (
               <PrestationCard
                 key={_id}
+                id={_id}
                 clientName={clientName}
                 state={state}
                 date={date}

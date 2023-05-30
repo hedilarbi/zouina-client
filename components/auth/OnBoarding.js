@@ -25,7 +25,7 @@ const OnBoarding = ({ navigation }) => {
 
   return (
     <View className="flex-1 justify-center items-center ">
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 4 }}>
         <FlatList
           data={slideItems}
           renderItem={({ item }) => <SlideItem item={item} />}
@@ -45,7 +45,7 @@ const OnBoarding = ({ navigation }) => {
           ref={slidesRef}
         />
       </View>
-      {currentIndex < slideItems.length - 1 ? (
+      {currentIndex < slideItems.length - 1 && currentIndex > 0 && (
         <View className="absolute bottom-20 w-full ">
           <Pagination data={slideItems} scrollX={scrollX} />
           <View className=" flex-row justify-between items-center px-5 mt-12">
@@ -57,17 +57,21 @@ const OnBoarding = ({ navigation }) => {
                 Skip
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={scrollTo} className="">
+            <TouchableOpacity
+              onPress={scrollTo}
+              className="bg-pr rounded-md px-4 py-2"
+            >
               <Text
                 style={{ fontFamily: "Montserrat-SemiBold" }}
-                className=" text-pr text-lg"
+                className=" text-white text-lg"
               >
                 Suivant
               </Text>
             </TouchableOpacity>
           </View>
         </View>
-      ) : (
+      )}
+      {currentIndex === slideItems.length - 1 && (
         <View className="absolute bottom-20 w-full">
           <Pagination data={slideItems} scrollX={scrollX} />
           <View className="  flex-row items-center justify-between px-5 mt-12">
@@ -84,13 +88,39 @@ const OnBoarding = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate("SignIn")}
-              className=""
+              className="bg-pr rounded-md px-4 py-2"
             >
               <Text
                 style={{ fontFamily: "Montserrat-SemiBold" }}
-                className=" text-pr text-lg"
+                className=" text-white text-lg"
               >
                 Se connecter
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+      {currentIndex === 0 && (
+        <View className="absolute bottom-20 w-full">
+          <Pagination data={slideItems} scrollX={scrollX} />
+          <View className="  flex-row items-center justify-between px-5 mt-12">
+            <TouchableOpacity onPress={skip} className="">
+              <Text
+                style={{ fontFamily: "Montserrat-SemiBold" }}
+                className=" text-white text-lg"
+              >
+                Skip
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={scrollTo}
+              className="bg-pr rounded-md px-4 py-2"
+            >
+              <Text
+                style={{ fontFamily: "Montserrat-SemiBold" }}
+                className=" text-white text-lg"
+              >
+                Commencer
               </Text>
             </TouchableOpacity>
           </View>

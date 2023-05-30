@@ -8,16 +8,19 @@ import { useEffect, useState } from "react";
 import { selectToken, selectUser, setUserDataToken } from "./slices/userSlice";
 import AuthNavigator from "./navigation/AuthNavigator";
 import { getItemAsync } from "expo-secure-store";
-import SplashScreen from "./screens/SplashScreen";
 
+import "expo-dev-client";
 import ClientNavigator from "./navigation/client/ClientNavigator";
 import ProfessionalNavigator from "./navigation/professional/ProfessionalNavigator";
 import { Alert } from "react-native";
+import CustomStatusBar from "./components/CustomStatusBar";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [isLoading, setIsloading] = useState(true);
   const [fontsLoaded] = useFonts({
-    "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
     "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
     "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
     "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
@@ -32,7 +35,7 @@ export default function App() {
       try {
         const userToken = await getItemAsync("token");
 
-        if (userToken != null) {
+        if (userToken) {
           const { data } = await getUserByToken(userToken);
 
           if (data) {
@@ -45,17 +48,24 @@ export default function App() {
           setIsloading(false);
         }
       } catch (error) {
-        Alert.alert("Oops something went wrong, try again later");
-        setIsloading(false);
+        if (error.response) {
+          Alert.alert("probleme interne");
+        } else {
+          Alert.alert("problème réseaux");
+        }
       }
     }
 
     useEffect(() => {
       restoreToken();
     }, []);
-
-    if (!fontsLoaded || isLoading) {
-      return <SplashScreen />;
+    const appIsReady = async () => {
+      await SplashScreen.hideAsync();
+    };
+    if (fontsLoaded && !isLoading) {
+      appIsReady();
+    } else {
+      return null;
     }
 
     return (
@@ -73,7 +83,10 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <RootNavigation />
+      <>
+        <CustomStatusBar backgroundColor="white" barStyle="dark-content" />
+        <RootNavigation />
+      </>
     </Provider>
   );
 }

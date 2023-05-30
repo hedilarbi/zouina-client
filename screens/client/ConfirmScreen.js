@@ -15,21 +15,23 @@ import { useNavigation } from "@react-navigation/native";
 import { selectProfessional } from "../../slices/professionalSlice";
 import { createPrestation } from "../../api/prestations";
 import { selectData } from "../../slices/userSlice";
+import Avatar from "../../components/Avatar";
 
 const ConfirmScreen = ({ route }) => {
   const navigation = useNavigation();
-  const services = useSelector(selectBasketServices);
   const professional = useSelector(selectProfessional);
   const client_id = useSelector(selectData)._id;
   const { type, time, date } = route.params;
   const [groupedServicesInBasket, setGroupedServicesInBasket] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [servicesList, setServicesList] = useState([]);
+  const services = useSelector(selectBasketServices);
 
-  const createServicesListAndTotalPrice = (services) => {
+  function createServicesListAndTotalPrice(groupedServices) {
     let services_list = [];
     let total_price = 0;
-    Object.entries(services).map(([key, service]) => {
+
+    Object.entries(groupedServices).map(([key, service]) => {
       services_list.push({
         service: service[0].id,
         quantity: service.length,
@@ -38,13 +40,14 @@ const ConfirmScreen = ({ route }) => {
     });
     setServicesList(services_list);
     setTotalPrice(total_price);
-  };
+  }
 
   const groupServicesInBasket = () => {
     const groupedServices = services.reduce((results, service) => {
       (results[service.id] = results[service.id] || []).push(service);
       return results;
     }, {});
+
     createServicesListAndTotalPrice(groupedServices);
     setGroupedServicesInBasket(groupedServices);
   };
@@ -70,21 +73,27 @@ const ConfirmScreen = ({ route }) => {
         type,
       });
     } catch (error) {
-      Alert.alert(error.message);
+      console.log(error);
+      if (error.response) {
+        console.log(error.response.data);
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 
   return (
     <View className=" py-4 flex-1 justify-between bg-white">
       {services.length === 0 && (
-        <View>
+        <View className="text-txt flex-1 justify-center items-center text-xl">
           <Text>Panier Vide</Text>
         </View>
       )}
       <View>
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="px-2 text-xl"
+          className="px-2 text-xl text-txt"
         >
           services
         </Text>
@@ -98,19 +107,14 @@ const ConfirmScreen = ({ route }) => {
       <View>
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="px-2 text-xl"
+          className="px-2 text-xl text-txt"
         >
           Professionnelle
         </Text>
         <View className="flex-row items-center mt-4 px-2">
-          <Image
-            source={{
-              uri: professional.user.image,
-            }}
-            className="h-14 w-14 bg-gray-300 p-4 rounded-full"
-          />
+          <Avatar image={professional.user.image} size="small" radius="full" />
           <Text
-            className="flex-1 text-lg ml-4"
+            className="flex-1 text-lg ml-4 text-txt"
             style={{ fontFamily: "Montserrat-Medium" }}
           >
             {professional.user.full_name}
@@ -118,10 +122,16 @@ const ConfirmScreen = ({ route }) => {
         </View>
       </View>
       <View className="flex-row justify-between px-2 mt-4">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-xl">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-xl text-txt"
+        >
           Prix Total
         </Text>
-        <Text style={{ fontFamily: "Montserrat-Medium" }} className="text-xl">
+        <Text
+          style={{ fontFamily: "Montserrat-Medium" }}
+          className="text-xl text-txt"
+        >
           {totalPrice} DZD
         </Text>
       </View>

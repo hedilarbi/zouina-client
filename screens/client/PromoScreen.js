@@ -19,7 +19,7 @@ const PromoScreen = () => {
           <TouchableOpacity className="mt-6 border-2 border-gray-500 px-6 py-1 rounded-full">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-lg"
+              className="text-lg "
             >
               Activer
             </Text>

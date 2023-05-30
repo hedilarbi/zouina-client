@@ -19,7 +19,7 @@ const HistoryNavigator = () => {
           title: "Détails",
           headerTitleAlign: "center",
           headerStyle: {
-            backgroundColor: "#FA69B7",
+            backgroundColor: "#BD72C8",
           },
           headerTintColor: "#fff",
           headerTitleStyle: {

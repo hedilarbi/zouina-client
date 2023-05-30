@@ -12,7 +12,10 @@ const PrestationCard = ({ clientName, state, price, date, id }) => {
     >
       <View className="flex-row justify-between border-b border-gray-300 pb-4 items-center">
         <PrestationTag state={state} />
-        <Text className="" style={{ fontFamily: "Montserrat-SemiBold" }}>
+        <Text
+          className="text-txt"
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+        >
           {date}
         </Text>
         <Text style={{ fontFamily: "Montserrat-SemiBold" }}>{price} DZD</Text>
@@ -20,7 +23,7 @@ const PrestationCard = ({ clientName, state, price, date, id }) => {
       <View className="mt-4">
         <Text
           style={{ fontFamily: "Montserrat-Medium" }}
-          className="text-center"
+          className="text-center text-txt"
         >
           {clientName}
         </Text>

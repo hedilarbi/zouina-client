@@ -8,8 +8,9 @@ import { cancelPrestation } from "../../api/prestations";
 import { setItemAsync } from "expo-secure-store";
 import { useDispatch } from "react-redux";
 import { clearBasket } from "../../slices/basketSlice";
+import { SOCKET_URL } from "../../assets/constants";
 
-const socket = io.connect("http://192.168.1.4:5000");
+const socket = io.connect(SOCKET_URL);
 export default function WaitingScreen({ route, navigation }) {
   const dispatch = useDispatch();
   const { prestationId, category } = route.params;
@@ -27,7 +28,7 @@ export default function WaitingScreen({ route, navigation }) {
       if (response === "accept") {
         savePrestationId();
       } else {
-        navigation.navigate("Home");
+        navigation.navigate("Appointement", { category });
       }
     });
     return () => {
@@ -40,7 +41,11 @@ export default function WaitingScreen({ route, navigation }) {
       await cancelPrestation(prestationId);
       navigation.navigate("Appointement", { category: category });
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 
@@ -51,7 +56,7 @@ export default function WaitingScreen({ route, navigation }) {
         className="h-80 w-80"
       />
       <Text
-        className="text-2xl text-center"
+        className="text-2xl text-center text-txt"
         style={{ fontFamily: "Montserrat-SemiBold" }}
       >
         En cours de traitement
@@ -65,7 +70,7 @@ export default function WaitingScreen({ route, navigation }) {
       </TouchableOpacity>
 
       <Text
-        className="text-xl mt-4"
+        className="text-xl mt-4 text-txt"
         style={{ fontFamily: "Montserrat-SemiBold" }}
       >
         Annuler

@@ -19,10 +19,8 @@ const HomeNavigation = () => {
         options={{
           title: "Détails",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,

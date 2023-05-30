@@ -38,8 +38,8 @@ const ProfessionalProfileTab = ({ gallery, comments }) => {
           style={{ backgroundColor: "white", shadowColor: "transparent" }}
           swipeEnabled
           labelStyle={{ color: "black", fontFamily: "Montserrat-Medium" }}
-          indicatorStyle={{ backgroundColor: "#FA69B7" }}
-          activeColor="#FA69B7"
+          indicatorStyle={{ backgroundColor: "#BD72C8" }}
+          activeColor="#BD72C8"
         />
       )}
     />

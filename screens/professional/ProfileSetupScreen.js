@@ -5,6 +5,7 @@ import {
   Alert,
   View,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import mime from "mime";
@@ -24,7 +25,7 @@ import {
 } from "../../slices/userSlice";
 const { width } = Dimensions.get("window");
 
-const ProfileSetupScreen = ({ navigation }) => {
+const ProfileSetupScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [slideAnimValue] = useState(new Animated.Value(0));
@@ -52,10 +53,12 @@ const ProfileSetupScreen = ({ navigation }) => {
   }, [currentStep]);
 
   const handleNext = () => {
+    Keyboard.dismiss();
     setCurrentStep(currentStep + 1);
   };
 
   const handlePrevious = () => {
+    Keyboard.dismiss();
     setCurrentStep(currentStep - 1);
   };
 
@@ -138,7 +141,11 @@ const ProfileSetupScreen = ({ navigation }) => {
         setIsLoading(false);
       })
       .catch((err) => {
-        Alert.alert(err.message);
+        if (err.response) {
+          Alert.alert("Problème interne");
+        } else {
+          Alert.alert("problème internet");
+        }
         setIsLoading(false);
       });
   };

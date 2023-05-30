@@ -24,17 +24,30 @@ export default function OnPrestationBanner({ prestationId }) {
   const [message, setMessage] = useState("");
 
   const getReviewState = async () => {
-    const { data } = await axios.get(
-      `${BASE_URL}/prestations/prestation/review_state/${prestationId}`
-    );
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/prestations/prestation/review_state/${prestationId}`
+      );
 
-    if (data.review_status === false) {
-      setModalVisible(true);
-    }
-    if (data.state === "accepted" && data.type === "Schedual") {
-      setMessage("vous avez une réservation");
-    } else if (data.state === "accepted" && data.type === "Immediately") {
-      setMessage("Votre professionelle est en route");
+      if (data.review_status === false) {
+        setModalVisible(true);
+      }
+      if (data.state === "accepted" && data.type === "Schedual") {
+        setMessage("vous avez une réservation en cours");
+      } else if (
+        data.state === "accepted" &&
+        data.type === "Immediately" &&
+        data.at_destination === false
+      ) {
+        setMessage("Votre professionelle est en route");
+      } else if (data.at_destination === true && data.state === "accepted") {
+        setMessage("Préstation en cours");
+      }
+    } catch (error) {
+      const { status } = error.response;
+      if (status === 500) {
+        Alert.alert("Problème interne");
+      }
     }
   };
 
@@ -48,16 +61,22 @@ export default function OnPrestationBanner({ prestationId }) {
     try {
       await reviewPrestation(prestationId, rating, comment);
       await deleteItemAsync("prestationId");
+      setModalVisible(false);
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
-
-    setModalVisible(false);
   };
 
   return (
     <View className="items-center justify-center flex-1 ">
-      <Text className="text-xl " style={{ fontFamily: "Montserrat-Medium" }}>
+      <Text
+        className="text-xl border-pr border-2 rounded-md px-16 py-4"
+        style={{ fontFamily: "Montserrat-Medium" }}
+      >
         {message}
       </Text>
       <Modal
@@ -80,7 +99,7 @@ export default function OnPrestationBanner({ prestationId }) {
           >
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-xl"
+              className="text-xl text-txt"
             >
               Note
             </Text>
@@ -105,14 +124,14 @@ export default function OnPrestationBanner({ prestationId }) {
             </View>
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-xl"
+              className="text-xl text-txt"
             >
               Commentaire
             </Text>
             <TextInput
               placeholder="Votre commentaire"
               value={comment}
-              className="py-3 text-xl rounded-md bg-gray-100 px-2 my-4"
+              className="py-3 text-xl rounded-md bg-gray-100 px-2 my-4 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
               placeholderTextColor="gray"
               onChangeText={(text) => setComment(text)}

@@ -14,13 +14,23 @@ const PrestationCard = ({ finishedAt, category, total, id }) => {
       onPress={() => navigation.navigate("Details", { id: id })}
     >
       <View className="flex-row justify-between border-b border-gray-300 pb-4">
-        <Text className="" style={{ fontFamily: "Montserrat-SemiBold" }}>
+        <Text
+          className="text-txt"
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+        >
           {date}
         </Text>
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }}>{total} DZD</Text>
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-txt"
+        >
+          {total} DZD
+        </Text>
       </View>
       <View className="mt-4">
-        <Text style={{ fontFamily: "Montserrat-Medium" }}>{category}</Text>
+        <Text style={{ fontFamily: "Montserrat-Medium" }} className="text-txt">
+          {category}
+        </Text>
       </View>
     </TouchableOpacity>
   );

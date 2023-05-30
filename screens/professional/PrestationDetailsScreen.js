@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import PrestationTag from "../../components/client/PrestationTag";
 import FormatedDate from "../../components/client/FormatedDate";
 import { getProfessionalPrestation } from "../../api/prestations";
+import Avatar from "../../components/Avatar";
 
 const PrestationDetailsScreen = ({ route }) => {
   const id = route.params.id;
@@ -20,11 +21,15 @@ const PrestationDetailsScreen = ({ route }) => {
   const getPrestation = async () => {
     try {
       const { data } = await getProfessionalPrestation(id);
+
       setPrestation(data);
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 
@@ -44,13 +49,19 @@ const PrestationDetailsScreen = ({ route }) => {
       <View className=" bg-gray-100 p-4 rounded-md">
         {prestation.type === "Schedual" ? (
           <View className="flex-row justify-between items-center">
-            <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+            <Text
+              style={{ fontFamily: "Montserrat-SemiBold" }}
+              className="text-txt text-lg"
+            >
               Réservation
             </Text>
             <PrestationTag state={prestation.state} />
           </View>
         ) : (
-          <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+          <Text
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+            className="text-lg"
+          >
             Date et Heure
           </Text>
         )}
@@ -61,7 +72,7 @@ const PrestationDetailsScreen = ({ route }) => {
         />
       </View>
       <View className="bg-gray-100 p-4 rounded-md mt-2">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-lg">
           {prestation.services[0].service.category.name}
         </Text>
         <View className="mt-4">
@@ -87,33 +98,39 @@ const PrestationDetailsScreen = ({ route }) => {
             );
           })}
           <View className="flex-row justify-between mt-4">
-            <Text style={{ fontFamily: "Montserrat-SemiBold" }}>Totale:</Text>
-            <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+            <Text
+              className="text-txt"
+              style={{ fontFamily: "Montserrat-SemiBold" }}
+            >
+              Totale:
+            </Text>
+            <Text
+              style={{ fontFamily: "Montserrat-SemiBold" }}
+              className="text-txt"
+            >
               {prestation.total_price} DZD
             </Text>
           </View>
         </View>
       </View>
       <View className=" bg-gray-100 p-4 mt-2 rounded-md">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }}>Cliente</Text>
+        <Text
+          className="text-txt text-lg"
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+        >
+          Cliente
+        </Text>
         <View className="flex-row items-center mt-4">
-          {prestation.client.user.image != null ? (
-            <Image
-              source={{ uri: prestation.client.user.image }}
-              className="h-12 w-12 rounded-full "
-            />
-          ) : (
-            <View className="bg-pr rounded-full justify-center items-center h-10 w-10 ">
-              <Text
-                className="text-white text-xl"
-                style={{ fontFamily: "Montserrat-SemiBold" }}
-              >
-                {prestation.client.user.full_name[0]}
-              </Text>
-            </View>
-          )}
+          <Avatar
+            image={prestation.client.user.image}
+            size="small"
+            radius="full"
+          />
           <View className="ml-4">
-            <Text className="" style={{ fontFamily: "Montserrat-Medium" }}>
+            <Text
+              className="text-lg text-txt"
+              style={{ fontFamily: "Montserrat-Medium" }}
+            >
               {prestation.client.user.full_name}
             </Text>
           </View>

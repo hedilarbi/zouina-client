@@ -13,7 +13,7 @@ const AppointementNavigator = ({ route }) => {
         tabBarLabelStyle: { fontFamily: "Montserrat-SemiBold", fontSize: 15 },
         lazy: true,
         tabBarIndicatorStyle: {
-          backgroundColor: "#FA69B7",
+          backgroundColor: "#BD72C8",
           height: 3,
         },
       }}

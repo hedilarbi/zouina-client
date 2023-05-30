@@ -24,12 +24,12 @@ const WorkingDayConfig = ({ workingDay, setWorkingTime }) => {
       <View className="flex-row justify-between items-center">
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="text-lg capitalize"
+          className="text-lg capitalize text-txt"
         >
           {day}
         </Text>
         <Switch
-          trackColor={{ false: "gray", true: "#FA69B7" }}
+          trackColor={{ false: "gray", true: "#BD72C8" }}
           thumbColor="white"
           value={state}
           onValueChange={toggleSwitch}
@@ -38,7 +38,10 @@ const WorkingDayConfig = ({ workingDay, setWorkingTime }) => {
       {state && (
         <View>
           <View className="flex-row items-center space-x-4">
-            <Text style={{ fontFamily: "Montserrat-Medium" }} className="w-16">
+            <Text
+              style={{ fontFamily: "Montserrat-Medium" }}
+              className="w-16 text-txt"
+            >
               Matin
             </Text>
             <TimePicker
@@ -63,7 +66,10 @@ const WorkingDayConfig = ({ workingDay, setWorkingTime }) => {
             />
           </View>
           <View className="flex-row items-center space-x-4 mt-4">
-            <Text style={{ fontFamily: "Montserrat-Medium" }} className="w-16">
+            <Text
+              style={{ fontFamily: "Montserrat-Medium" }}
+              className="w-16 tex-txt"
+            >
               Soir
             </Text>
             <TimePicker

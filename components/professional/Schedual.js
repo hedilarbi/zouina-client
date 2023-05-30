@@ -29,7 +29,11 @@ const Schedual = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 

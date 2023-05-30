@@ -8,7 +8,7 @@ import { useState } from "react";
 import PrestationCard from "../../components/client/PrestationCard";
 import { selectData } from "../../slices/userSlice";
 
-const HistoryScreen = () => {
+const HistoryScreen = ({ navigation }) => {
   const { _id } = useSelector(selectData);
   const [prestations, setPrestations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,13 +19,23 @@ const HistoryScreen = () => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
-
   useEffect(() => {
-    getImmediatePrestations();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getImmediatePrestations();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+  // useEffect(() => {
+  //   getImmediatePrestations();
+  // }, []);
 
   if (isLoading) {
     return (
@@ -54,7 +64,12 @@ const HistoryScreen = () => {
         </ScrollView>
       ) : (
         <View className="flex-1 bg-white justify-center items-center">
-          <Text style={{ fontFamily: "Montserrat-Medium" }}>Vide</Text>
+          <Text
+            style={{ fontFamily: "Montserrat-Medium" }}
+            className="text-txt"
+          >
+            Vide
+          </Text>
         </View>
       )}
     </View>

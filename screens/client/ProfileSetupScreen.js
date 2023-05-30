@@ -6,6 +6,7 @@ import {
   Alert,
   View,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const { width } = Dimensions.get("window");
@@ -40,10 +41,12 @@ const ProfileSetupScreen = () => {
   }, [currentStep]);
 
   const handleNext = () => {
+    Keyboard.dismiss();
     setCurrentStep(currentStep + 1);
   };
 
   const handlePrevious = () => {
+    Keyboard.dismiss();
     setCurrentStep(currentStep - 1);
   };
 
@@ -83,7 +86,11 @@ const ProfileSetupScreen = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      Alert.alert(err.message);
+      if (err.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 

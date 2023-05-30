@@ -16,13 +16,13 @@ const BasketCard = ({ services, id }) => {
 
       <Text
         numberOfLines={1}
-        className="flex-1 text-lg"
+        className="flex-1 text-lg text-txt"
         style={{ fontFamily: "Montserrat-Medium" }}
       >
         {services[0].name}
       </Text>
       <Text
-        className="text-gray-600 text-lg"
+        className="text-txt text-lg"
         style={{ fontFamily: "Montserrat-Medium" }}
       >
         {services[0].price}

@@ -23,6 +23,15 @@ const ProfessionalInfoScreen = ({}) => {
   const [images, setImages] = useState(gallery);
 
   const pickImage = async (index) => {
+    const { status: existingStatus } =
+      await ImagePicker.getMediaLibraryPermissionsAsync();
+    if (existingStatus !== "granted") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("permissions obligatoire pour pouvoir créer une gallerie");
+      }
+    }
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
     });
@@ -77,7 +86,7 @@ const ProfessionalInfoScreen = ({}) => {
         formdata.append("toDelete", image);
       });
     }
-    console.log(formdata);
+
     await fetch(`${BASE_URL}/professionals/update/gallery/${_id}`, {
       method: "PUT",
       headers: {
@@ -93,7 +102,11 @@ const ProfessionalInfoScreen = ({}) => {
       })
       .catch((error) => {
         setIsLoading(false);
-        console.error(error.message);
+        if (error.response) {
+          Alert.alert("Problème interne");
+        } else {
+          Alert.alert("problème internet");
+        }
       });
   };
   return (
@@ -104,7 +117,10 @@ const ProfessionalInfoScreen = ({}) => {
         </View>
       )}
       <View className="">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-xl">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-xl text-txt"
+        >
           Spécialités
         </Text>
         <View className="flex-row  mt-4 items-center space-x-4">
@@ -120,7 +136,10 @@ const ProfessionalInfoScreen = ({}) => {
         </View>
       </View>
       <View className="mt-4 flex-1">
-        <Text style={{ fontFamily: "Montserrat-SemiBold" }} className="text-xl">
+        <Text
+          style={{ fontFamily: "Montserrat-SemiBold" }}
+          className="text-xl text-txt"
+        >
           Gallerie
         </Text>
         <View className="flex-row flex-wrap justify-between flex-1 mt-4">
@@ -155,14 +174,14 @@ const ProfessionalInfoScreen = ({}) => {
                       className="absolute -bottom-2 -right-3 bg-white rounded-full"
                       onPress={() => removeImage(i)}
                     >
-                      <AntDesign name="closecircle" size={28} color="#FA69B7" />
+                      <AntDesign name="closecircle" size={28} color="#BD72C8" />
                     </TouchableOpacity>
                   ) : (
                     <TouchableOpacity
                       className="absolute -bottom-2 -right-3 bg-white rounded-full"
                       onPress={() => pickImage(i)}
                     >
-                      <AntDesign name="pluscircle" size={28} color="#FA69B7" />
+                      <AntDesign name="pluscircle" size={28} color="#BD72C8" />
                     </TouchableOpacity>
                   )}
                 </View>

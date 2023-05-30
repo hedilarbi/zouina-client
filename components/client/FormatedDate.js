@@ -17,7 +17,7 @@ const FormatedDate = ({ finishedAt, schedual_date, state }) => {
     }
     setDate({
       date: date1.toDateString("fr-FR"),
-      time: date1.toLocaleTimeString("fr-FR").substr(0, 5),
+      time: date1.toLocaleTimeString("fr-FR").slice(0, 5),
     });
   };
   useEffect(() => {
@@ -28,11 +28,15 @@ const FormatedDate = ({ finishedAt, schedual_date, state }) => {
     <>
       <View className="flex-row space-x-4 items-center mt-2">
         <FontAwesome name="calendar" size={22} color="#818589" />
-        <Text style={{ fontFamily: "Montserrat-Medium" }}>{date.date}</Text>
+        <Text style={{ fontFamily: "Montserrat-Medium" }} className="text-txt">
+          {date.date}
+        </Text>
       </View>
       <View className="flex-row space-x-4 items-center mt-4">
         <FontAwesome name="clock-o" size={22} color="#818589" />
-        <Text style={{ fontFamily: "Montserrat-Medium" }}>{date.time}</Text>
+        <Text style={{ fontFamily: "Montserrat-Medium" }} className="text-txt">
+          {date.time}
+        </Text>
       </View>
     </>
   );

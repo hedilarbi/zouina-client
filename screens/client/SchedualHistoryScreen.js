@@ -20,11 +20,16 @@ const SchedualHistoryScreen = ({ navigation }) => {
     setIsLoading(true);
     try {
       const { data } = await getSchedualClientPrestations(_id);
+
       setPrestations(data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
 
@@ -39,9 +44,14 @@ const SchedualHistoryScreen = ({ navigation }) => {
     date = date.substr(4, 17);
     return date;
   };
+
   useEffect(() => {
-    getSchedualPrestations();
-  }, []);
+    const unsubscribe = navigation.addListener("focus", () => {
+      getSchedualPrestations();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   if (isLoading) {
     return (
@@ -62,7 +72,7 @@ const SchedualHistoryScreen = ({ navigation }) => {
             );
             return (
               <TouchableOpacity
-                className="bg-gray-100 rounded-md p-4 mb-3"
+                className="bg-white rounded-md p-4 mb-3"
                 key={prestation._id}
                 onPress={() =>
                   navigation.navigate("Details", { id: prestation._id })
@@ -80,19 +90,22 @@ const SchedualHistoryScreen = ({ navigation }) => {
                   )}
 
                   <Text
-                    className=""
+                    className="text-txt"
                     style={{ fontFamily: "Montserrat-SemiBold" }}
                   >
                     {date}
                   </Text>
-                  <Text style={{ fontFamily: "Montserrat-SemiBold" }}>
+                  <Text
+                    className="text-txt"
+                    style={{ fontFamily: "Montserrat-SemiBold" }}
+                  >
                     {prestation.total_price} DZD
                   </Text>
                 </View>
                 <View className="mt-4 flex-row ">
                   <Text
                     style={{ fontFamily: "Montserrat-Medium" }}
-                    className="bg-slate-400 px-2 py-1 rounded-full"
+                    className="bg-gray-300 px-2 py-1 rounded-full"
                   >
                     {prestation.services[0].service.category.name}
                   </Text>
@@ -103,7 +116,12 @@ const SchedualHistoryScreen = ({ navigation }) => {
         </ScrollView>
       ) : (
         <View className="flex-1 bg-white justify-center items-center">
-          <Text style={{ fontFamily: "Montserrat-Medium" }}>Vide</Text>
+          <Text
+            className="text-txt"
+            style={{ fontFamily: "Montserrat-Medium" }}
+          >
+            Vide
+          </Text>
         </View>
       )}
     </View>

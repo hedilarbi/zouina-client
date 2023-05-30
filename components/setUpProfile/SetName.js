@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Entypo, FontAwesome } from "@expo/vector-icons";
@@ -21,20 +22,20 @@ const SetName = ({
   name,
   setName,
 }) => {
-  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
-  useEffect(() => {
-    async () => {
-      const galleryStatus =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      setHasGalleryPermission(galleryStatus.status === "granted");
-    };
-  }, []);
   const pickImage = async () => {
+    const { status: existingStatus } =
+      await ImagePicker.getMediaLibraryPermissionsAsync();
+    if (existingStatus !== "granted") {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("permissions obligatoire pour pouvoir créer une gallerie");
+        return null;
+      }
+    }
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
+
       quality: 1,
     });
 
@@ -42,9 +43,6 @@ const SetName = ({
       setImage(result.uri);
     }
   };
-  if (hasGalleryPermission === false) {
-    return <Text>No access</Text>;
-  }
 
   return (
     <Animated.View
@@ -58,7 +56,7 @@ const SetName = ({
         className="flex-1"
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View className="flex-1">
+        <ScrollView className="flex-1">
           <View className="mx-auto bg-gray-300 h-44 w-44 rounded-full mt-4">
             {image && (
               <Image
@@ -77,18 +75,18 @@ const SetName = ({
           <View className="mt-24">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-xl"
+              className="text-xl text-txt"
             >
               Nom et Prénom
             </Text>
             <TextInput
-              className="text-base border-b border-black pt-2 mt-6"
+              className="text-base border-b border-black pt-2 mt-6 text-txt"
               style={{ fontFamily: "Montserrat-Medium" }}
               value={name}
               onChangeText={(text) => setName(text)}
             />
           </View>
-        </View>
+        </ScrollView>
         <TouchableOpacity
           className={
             name.length != 0

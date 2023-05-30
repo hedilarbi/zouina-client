@@ -4,15 +4,21 @@
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/adaptive-icon.png",
     "userInterfaceStyle": "light",
-    "plugins": [],
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Zouina to access your photos"
+        }
+      ]
+    ],
     "scheme": "com.hedilarbi.zouina",
-
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#BD72C8"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,15 +28,25 @@
       "supportsTablet": true
     },
     "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDUlRMobmtsH0tyfBG2t9-RYHsV38kX9UY"
+        }
+      },
       "package": "com.hedilarbi.zouina",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#BD72C8"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b29da2c9-ae5d-416e-befc-a0cad8cf6ae7"
+      }
     }
   }
 }

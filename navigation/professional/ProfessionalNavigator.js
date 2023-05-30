@@ -14,8 +14,9 @@ import { getItemAsync, setItemAsync } from "expo-secure-store";
 import { ActivityIndicator, View } from "react-native";
 
 import * as TaskManager from "expo-task-manager";
+import { SOCKET_URL } from "../../assets/constants";
 
-const socket = io.connect("http://192.168.1.4:5000");
+const socket = io.connect(SOCKET_URL);
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -30,8 +31,11 @@ const BACKGROUND_NOTIFICATION_TASK = "BACKGROUND-NOTIFICATION-TASK";
 TaskManager.defineTask(
   BACKGROUND_NOTIFICATION_TASK,
   ({ data, error, executionInfo }) => {
-    console.log("Received a notification in the background!");
-    // Do something with the notification data
+    return (
+      <View>
+        <Text>AAAEEEE</Text>
+      </View>
+    );
   }
 );
 

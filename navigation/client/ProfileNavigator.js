@@ -21,10 +21,8 @@ const ProfileNavigator = () => {
         options={{
           title: "Changer Mot de passe",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,
@@ -37,10 +35,8 @@ const ProfileNavigator = () => {
         options={{
           title: "Informations Profile",
           headerTitleAlign: "center",
-          headerStyle: {
-            backgroundColor: "#FA69B7",
-          },
-          headerTintColor: "#fff",
+
+          headerTintColor: "#BD72C8",
           headerTitleStyle: {
             fontFamily: "Montserrat-SemiBold",
             fontSize: 20,

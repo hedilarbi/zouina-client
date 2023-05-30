@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import * as Location from "expo-location";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -30,43 +30,6 @@ const HomeScreen = ({ navigation }) => {
   const [prestationsList, setPrestationsList] = useState([]);
   const dispatch = useDispatch();
 
-  const [location, setLocation] = useState();
-  const [address, setAddress] = useState();
-
-  // useEffect(() => {
-  //   const getPermissions = async () => {
-  //     let { status } = await Location.requestForegroundPermissionsAsync();
-  //     if (status !== "granted") {
-  //       console.log("Please grand location permissions");
-  //     }
-  //     let currentLocation = await Location.getCurrentPositionAsync({});
-  //     setLocation(currentLocation);
-  //   };
-  //   getPermissions();
-  // }, []);
-
-  //const API_KEY = "AIzaSyDZHJsqwlavl1jvOfbaFUTcWfkooFLG0Iw";
-  // Location.setGoogleApiKey("AIzaSyAfEGUZpBSpzj8hHeGrHUEyPqtvVNU41As");
-  // const geoCode = async () => {
-  //   const geocodedLocation = await Location.geocodeAsync(address);
-  //   console.log("geocoded Address:");
-  //   console.log(geocodedLocation);
-  // };
-
-  // const reverseGeocode = async () => {
-  //   console.log(location);
-  //   const reverseGeocodeAddress = await Location.reverseGeocodeAsync(
-  //     {
-  //       latitude: location.coords.latitude,
-  //       longitude: location.coords.longitude,
-  //     },
-  //     {
-  //       useGoogleMaps: true,
-  //     }
-  //   );
-
-  // };
-
   async function toggleSwitch() {
     setIsLoading(true);
     try {
@@ -77,7 +40,11 @@ const HomeScreen = ({ navigation }) => {
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   }
 
@@ -88,7 +55,11 @@ const HomeScreen = ({ navigation }) => {
       setPrestationsList(data);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   }
   useEffect(() => {
@@ -116,26 +87,26 @@ const HomeScreen = ({ navigation }) => {
       <View className="bg-white  rounded-md p-4">
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="text-xl "
+          className="text-xl text-txt"
         >
           Bonjour,
         </Text>
         <View className="flex-row justify-between items-center">
           <Text
             style={{ fontFamily: "Montserrat-Medium" }}
-            className="text-lg mt-2"
+            className="text-lg mt-2 text-txt"
           >
             Mme. {full_name}
           </Text>
           <View className="flex-row items-center">
             <Text
               style={{ fontFamily: "Montserrat-Medium" }}
-              className="ml-2 text-lg"
+              className="ml-2 text-lg text-txt"
             >
               {availability ? "Disponible" : "Indisponible"}{" "}
             </Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#FA69B7" }}
+              trackColor={{ false: "#767577", true: "#BD72C8" }}
               thumbColor="#f0f0f0"
               onValueChange={toggleSwitch}
               value={availability}
@@ -144,7 +115,7 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </View>
       <Text
-        className="text-xl my-4"
+        className="text-xl my-4 text-txt"
         style={{ fontFamily: "Montserrat-SemiBold" }}
       >
         Réservations
@@ -165,14 +136,14 @@ const HomeScreen = ({ navigation }) => {
               >
                 <View className="flex-1">
                   <Text
-                    className="border-b pb-1"
+                    className="border-b pb-1 text-txt"
                     style={{ fontFamily: "Montserrat-SemiBold" }}
                   >
                     {date}
                   </Text>
                   <View className="mt-2 flex-row justify-between">
-                    <Text className="text-gray-500 ">{time}</Text>
-                    <Text className="text">Dureé: 45 min</Text>
+                    <Text className="text-txt ">{time}</Text>
+                    <Text className="text-txt">Dureé: 45 min</Text>
                   </View>
                 </View>
                 <Entypo name="chevron-thin-right" size={24} color="gray" />

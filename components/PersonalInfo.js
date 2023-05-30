@@ -15,6 +15,7 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "../slices/userSlice";
 import { updateUser } from "../api/user";
+import Avatar from "./Avatar";
 
 const PersonalInfo = () => {
   const user = useSelector(selectUser);
@@ -47,7 +48,11 @@ const PersonalInfo = () => {
       Alert.alert("profile modifié");
     } catch (error) {
       setIsLoading(false);
-      Alert.alert("Erreur ");
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
   return (
@@ -62,25 +67,10 @@ const PersonalInfo = () => {
       )}
 
       <View className="justify-center items-center">
-        <View className=" h-24 w-24 rounded-full bg-pr justify-center ">
-          {user.image ? (
-            <Image
-              source={{ uri: user.image }}
-              style={{ resizeMode: "cover", flex: 1 }}
-              className="rounded-full"
-            />
-          ) : (
-            <Text
-              className="capitalize text-6xl text-center mt-3 text-white"
-              style={{ fontFamily: "Montserrat-SemiBold" }}
-            >
-              {user.full_name[0]}
-            </Text>
-          )}
-        </View>
+        <Avatar image={user.image} size="large" radius="full" />
         <Text
           style={{ fontFamily: "Montserrat-SemiBold" }}
-          className="mt-2 text-lg tracking-widest"
+          className="mt-2 text-lg tracking-widest text-txt"
         >
           {user.phone_number}
         </Text>
@@ -89,13 +79,13 @@ const PersonalInfo = () => {
         <View className="mt-6">
           <Text
             style={{ fontFamily: "Montserrat-SemiBold" }}
-            className="text-lg"
+            className="text-lg text-txt"
           >
             Nom et Prénom
           </Text>
           <TextInput
             placeholder={formFields.full_name}
-            className="text-lg  border-b px-1 py-2"
+            className="text-lg  border-b px-1 py-2 text-txt"
             placeholderTextColor={"#E7ACAA"}
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.full_name}
@@ -107,13 +97,13 @@ const PersonalInfo = () => {
         <View className="mt-6">
           <Text
             style={{ fontFamily: "Montserrat-SemiBold" }}
-            className="text-lg"
+            className="text-lg text-txt"
           >
             Email
           </Text>
           <TextInput
             placeholder={formFields.email}
-            className="text-lg  border-b px-1 py-2"
+            className="text-lg  border-b px-1 py-2 text-txt"
             placeholderTextColor={"#E7ACAA"}
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.email}
@@ -125,7 +115,7 @@ const PersonalInfo = () => {
         <View className="mt-6">
           <Text
             style={{ fontFamily: "Montserrat-SemiBold" }}
-            className="text-lg"
+            className="text-lg text-txt"
           >
             Date de naissance
           </Text>
@@ -135,7 +125,7 @@ const PersonalInfo = () => {
           >
             <Text
               style={{ fontFamily: "Montserrat-Medium" }}
-              className="text-lg text-[#E7ACAA]"
+              className="text-lg text-txt"
             >
               {formFields.birthday === ""
                 ? ""

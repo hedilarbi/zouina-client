@@ -58,7 +58,7 @@ const TimePicker = ({ session, setWorkingTime, state, day, time }) => {
         onPress={() => setShow(true)}
         className="bg-slate-300 rounded-md px-2 py-1  ml-4"
       >
-        <Text style={{ fontFamily: "Montserrat-Medium" }}>
+        <Text style={{ fontFamily: "Montserrat-Medium" }} className="text-txt">
           {newTime.getHours() < 10
             ? "0" + newTime.getHours()
             : newTime.getHours()}{" "}

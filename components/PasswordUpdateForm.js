@@ -29,7 +29,7 @@ const PasswordUpdateForm = () => {
     } else {
       setIsLoading(true);
       try {
-        const { data, status } = await updatePassword(
+        const { data } = await updatePassword(
           _id,
           formFields.old,
           formFields.new
@@ -39,7 +39,16 @@ const PasswordUpdateForm = () => {
         Alert.alert("Mot de passe modifié");
       } catch (error) {
         setIsLoading(false);
-        Alert.alert("mot de passe incorrecte");
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 500) {
+            Alert.alert("Problème interne");
+          } else {
+            Alert.alert(error.response.data.message);
+          }
+        } else {
+          Alert.alert("problème internet");
+        }
       }
     }
   };
@@ -60,12 +69,12 @@ const PasswordUpdateForm = () => {
           <View className="mt-2">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-lg"
+              className="text-lg text-txt"
             >
               Ancien mot de passe
             </Text>
             <TextInput
-              className="border-b py-2 text-lg"
+              className="border-b py-2 text-lg text-txt"
               secureTextEntry={true}
               value={formFields.old}
               style={{ fontFamily: "Montserrat-Medium" }}
@@ -77,12 +86,12 @@ const PasswordUpdateForm = () => {
           <View className="mt-4">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-lg"
+              className="text-lg text-txt"
             >
               Nouveau mot de passe
             </Text>
             <TextInput
-              className="border-b py-2 text-lg"
+              className="border-b py-2 text-lg text-txt"
               secureTextEntry={true}
               value={formFields.new}
               style={{ fontFamily: "Montserrat-Medium" }}
@@ -94,12 +103,12 @@ const PasswordUpdateForm = () => {
           <View className="mt-4">
             <Text
               style={{ fontFamily: "Montserrat-SemiBold" }}
-              className="text-lg"
+              className="text-lg text-txt"
             >
               Confirmer mot de passe
             </Text>
             <TextInput
-              className="border-b py-2 text-lg"
+              className="border-b py-2 text-lg text-txt"
               secureTextEntry={true}
               value={formFields.confirm}
               style={{ fontFamily: "Montserrat-Medium" }}

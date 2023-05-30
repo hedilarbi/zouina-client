@@ -1,6 +1,5 @@
 export const validateSignUpFormInputs = (
   phone_number,
-
   password,
   validate_password
 ) => {

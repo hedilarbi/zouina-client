@@ -26,9 +26,9 @@ const SignInForm = () => {
     expo_token: "",
   });
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setFormFields({ ...formFields, expo_token: token })
-    );
+    registerForPushNotificationsAsync().then((token) => {
+      setFormFields({ ...formFields, expo_token: token });
+    });
   }, []);
   const [formErrors, setFormerrors] = useState({});
 
@@ -54,7 +54,7 @@ const SignInForm = () => {
         if (err.response) {
           setFormerrors({ server: err.response.data.message });
         } else {
-          Alert.alert("connexion problem");
+          Alert.alert("problème internet");
         }
       }
     }
@@ -79,7 +79,7 @@ const SignInForm = () => {
         <View>
           <TextInput
             placeholder="Numéro Telephone"
-            placeholderTextColor={"#E7ACAA"}
+            placeholderTextColor={"#FFFFFF"}
             className=" border-b-2 border-pr py-2 text-lg text-white"
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.phone}
@@ -100,7 +100,7 @@ const SignInForm = () => {
         <View className="">
           <TextInput
             placeholder="Mot de passe"
-            placeholderTextColor={"#E7ACAA"}
+            placeholderTextColor={"#FFFFFF"}
             className=" border-b-2 border-pr py-2 text-lg text-white"
             style={{ fontFamily: "Montserrat-Medium" }}
             value={formFields.password}
@@ -170,7 +170,11 @@ async function registerForPushNotificationsAsync() {
       alert("Failed to get push token for push notification!");
       return;
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    token = (
+      await Notifications.getExpoPushTokenAsync({
+        experienceId: "@hedilarbi95/client",
+      })
+    ).data;
   } else {
     alert("Must use physical device for Push Notifications");
   }

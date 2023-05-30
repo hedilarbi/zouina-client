@@ -1,24 +1,56 @@
-import { View, Text, Image, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Alert,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRoute } from "@react-navigation/native";
+
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { getProfessionalByID } from "../../api/professional";
 import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
+
 import ProfessionalProfileTab from "../../components/client/ProfessionalProfileTab";
+import Avatar from "../../components/Avatar";
+import { useDispatch } from "react-redux";
+import { setProfessional } from "../../slices/professionalSlice";
 
 const ProfessionalProfileScreen = () => {
   const route = useRoute();
-  const [professional, setProfessional] = useState({});
+  const [professionalProfile, setProfessionalProfile] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const chooseProfessional = () => {
+    dispatch(
+      setProfessional({
+        user: {
+          image: professionalProfile.user.image,
+          full_name: professionalProfile.user.full_name,
+        },
+        id: professionalProfile._id,
+      })
+    );
+    navigation.navigate("Confirm", {
+      type: route.params.type,
+      date: route.params.date,
+      time: route.params.time,
+    });
+  };
   const getProfessional = async () => {
     try {
       const { data } = await getProfessionalByID(route.params.id);
 
-      setProfessional(data);
+      setProfessionalProfile(data);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert(error.message);
+      if (error.response) {
+        Alert.alert("Problème interne");
+      } else {
+        Alert.alert("problème internet");
+      }
     }
   };
   useEffect(() => {
@@ -33,34 +65,22 @@ const ProfessionalProfileScreen = () => {
     );
   }
   return (
-    <View className=" bg-white flex-1">
+    <View className=" bg-white flex-1 justify-between">
       <View className="flex-row items-center p-4 border-b-2 border-pr">
-        {professional.user.image ? (
-          <Image
-            source={{
-              uri: professional.user.image,
-            }}
-            className="h-32 w-32 rounded-full"
-          />
-        ) : (
-          <View className="items-center justify-center rounded-full h-32 w-32">
-            <Text
-              className="text-white text-2xl"
-              style={{ fontFamily: "Montserrat-SemiBold" }}
-            >
-              {professional.user.full_name[0]}
-            </Text>
-          </View>
-        )}
+        <Avatar
+          image={professionalProfile.user.image}
+          size="large"
+          radius="full"
+        />
         <View className="ml-6 space-y-2">
           <Text
             style={{ fontFamily: "Montserrat-SemiBold" }}
-            className="text-xl"
+            className="text-xl text-txt"
           >
-            {professional.user.full_name}
+            {professionalProfile.user.full_name}
           </Text>
           <View className="flex-row items-center space-x-2">
-            {professional.specialities.map((speciality, index) => {
+            {professionalProfile.specialities.map((speciality, index) => {
               return (
                 <Text
                   key={index}
@@ -73,30 +93,40 @@ const ProfessionalProfileScreen = () => {
             })}
           </View>
           <View className="flex-row space-x-2 items-center">
-            <AntDesign name="star" size={20} color="#FA69B7" />
-            <Text style={{ fontFamily: "Montserrat-Medium" }}>
-              {Math.round(professional.rating.rate)}
-            </Text>
-            <Text className="" style={{ fontFamily: "Montserrat-Medium" }}>
-              ({professional.rating.rating_number} reviews)
-            </Text>
-          </View>
-          <View className="flex-row space-x-2 items-center">
-            <Entypo name="location-pin" size={20} color="#FA69B7" />
+            <AntDesign name="star" size={20} color="#BD72C8" />
             <Text
               style={{ fontFamily: "Montserrat-Medium" }}
-              className="text-sm"
+              className="text-txt"
             >
-              5 Km
+              {Math.round(professionalProfile.rating.rate)}
+            </Text>
+            <Text
+              className="text-txt"
+              style={{ fontFamily: "Montserrat-Medium" }}
+            >
+              ({professionalProfile.rating.rating_number} reviews)
             </Text>
           </View>
         </View>
       </View>
       <View className="flex-1">
         <ProfessionalProfileTab
-          gallery={professional.gallery}
-          comments={professional.comments}
+          gallery={professionalProfile.gallery}
+          comments={professionalProfile.comments}
         />
+      </View>
+      <View>
+        <TouchableOpacity
+          className="bg-pr px-6 py-3 rounded-md my-8 mx-6"
+          onPress={chooseProfessional}
+        >
+          <Text
+            style={{ fontFamily: "Montserrat-SemiBold" }}
+            className="text-white text-lg py-0.5 text-center"
+          >
+            Choisir
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

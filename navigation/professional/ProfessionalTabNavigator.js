@@ -24,9 +24,9 @@ const ProfessionalTabNavigator = () => {
           switch (route.name) {
             case "HomeNavigation":
               iconName = focused ? (
-                <SimpleLineIcons name="magnifier" size={24} color="#FA69B7" />
+                <SimpleLineIcons name="magnifier" size={24} color="#BD72C8" />
               ) : (
-                <SimpleLineIcons name="magnifier" size={24} color="#FA69B7" />
+                <SimpleLineIcons name="magnifier" size={24} color="#BD72C8" />
               );
               break;
             case "Wallet":
@@ -34,28 +34,28 @@ const ProfessionalTabNavigator = () => {
                 <MaterialCommunityIcons
                   name="ticket-confirmation"
                   size={24}
-                  color="#FA69B7"
+                  color="#BD72C8"
                 />
               ) : (
                 <MaterialCommunityIcons
                   name="ticket-confirmation-outline"
                   size={24}
-                  color="#FA69B7"
+                  color="#BD72C8"
                 />
               );
               break;
             case "HistoryNavigator":
               iconName = focused ? (
-                <FontAwesome name="history" size={24} color="#FA69B7" />
+                <FontAwesome name="history" size={24} color="#BD72C8" />
               ) : (
-                <MaterialIcons name="history" size={24} color="#FA69B7" />
+                <MaterialIcons name="history" size={24} color="#BD72C8" />
               );
               break;
             case "ProfessionalProfile":
               iconName = focused ? (
-                <FontAwesome name="user" size={24} color="#FA69B7" />
+                <FontAwesome name="user" size={24} color="#BD72C8" />
               ) : (
-                <FontAwesome name="user-o" size={24} color="#FA69B7" />
+                <FontAwesome name="user-o" size={24} color="#BD72C8" />
               );
               break;
           }
