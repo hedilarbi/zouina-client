@@ -9,11 +9,11 @@ import WaitingScreen from "../../screens/client/WaitingScreen";
 
 const ClientNavigator = () => {
   const Stack = createNativeStackNavigator();
-  const { is_profile_setup } = useSelector(selectUser);
+  // const { is_profile_setup } = useSelector(selectUser);
 
   return (
     <Stack.Navigator>
-      {is_profile_setup ? (
+      {/* {is_profile_setup ? (
         <Stack.Group>
           <Stack.Screen
             name="MainNavigator"
@@ -41,7 +41,20 @@ const ClientNavigator = () => {
             options={{ headerShown: false }}
           />
         </Stack.Group>
-      )}
+      )} */}
+
+      <Stack.Screen
+        name="MainNavigator"
+        component={ClientTabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Waiting"
+        component={WaitingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

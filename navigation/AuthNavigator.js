@@ -1,12 +1,21 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OnboardingScreen from "../screens/auth/OnboardingScreen";
-import SignInScreen from "../screens/auth/SignInScreen";
-import SignUpScreen from "../screens/auth/SignUpScreen";
+
+import LoginScreen from "../screens/auth/LoginScreen";
+import OtpScreen from "../screens/auth/OtpScreen";
+import ProfileSetupScreen from "../screens/client/ProfileSetupScreen";
 
 const AuthNavigator = () => {
   const AuthStack = createNativeStackNavigator();
   return (
     <AuthStack.Navigator>
+      <AuthStack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
       <AuthStack.Screen
         name="Onboarding"
         component={OnboardingScreen}
@@ -16,18 +25,16 @@ const AuthNavigator = () => {
       />
 
       <AuthStack.Screen
-        name="SignUp"
-        component={SignUpScreen}
+        name="Otp"
+        component={OtpScreen}
         options={{
           headerShown: false,
         }}
       />
       <AuthStack.Screen
-        name="SignIn"
-        component={SignInScreen}
-        options={{
-          headerShown: false,
-        }}
+        name="ProfileSetup"
+        component={ProfileSetupScreen}
+        options={{ headerShown: false }}
       />
     </AuthStack.Navigator>
   );

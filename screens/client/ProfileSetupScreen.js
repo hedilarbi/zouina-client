@@ -1,127 +1,208 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
 import {
-  Dimensions,
-  Animated,
-  Alert,
   View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
   ActivityIndicator,
-  Keyboard,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-const { width } = Dimensions.get("window");
-import mime from "mime";
-import { BASE_URL } from "../../assets/constants";
-import SetName from "../../components/setUpProfile/SetName";
-import SetMail from "../../components/setUpProfile/SetMail";
+import React, { useEffect, useRef, useState } from "react";
+
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setUser } from "../../slices/userSlice";
+
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { formatDate } from "../../utils/dateHandlers";
+import ErrorModal from "../../components/modals/ErrorModal";
 
 const ProfileSetupScreen = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [slideAnimValue] = useState(new Animated.Value(0));
-  const [isLoading, setIsLoading] = useState(false);
-  const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [mail, setMail] = useState("");
-  const [birthday, setBirthday] = useState({
-    day: "",
-    month: "",
-    year: "",
-  });
-  const { _id } = useSelector(selectUser);
-
   const dispatch = useDispatch();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [coords, setCoords] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFail, setIsFail] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date("2015-1-1"));
+
+  const nameInput = useRef(null);
+  const emailInput = useRef(null);
+
   useEffect(() => {
-    Animated.timing(slideAnimValue, {
-      toValue: -width * currentStep,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, [currentStep]);
+    if (isFail) {
+      const timer = setTimeout(() => {
+        setIsFail(false);
+      }, 2000);
 
-  const handleNext = () => {
-    Keyboard.dismiss();
-    setCurrentStep(currentStep + 1);
+      return () => clearTimeout(timer);
+    }
+  }, [isFail]);
+
+  const updateUser = async () => {
+    // if (name.length <= 0) {
+    //   nameInput.current.setNativeProps({
+    //     style: {
+    //       borderColor: "red",
+    //       borderWidth: 2,
+    //     },
+    //   });
+    //   return null;
+    // }
+    // const isEmailValid = emailValidator(email);
+    // if (isEmailValid) {
+    //   emailInput.current.setNativeProps({
+    //     style: {
+    //       borderColor: "red",
+    //       borderWidth: 2,
+    //     },
+    //   });
+    //   return null;
+    // }
+    // setIsLoading(true);
+    // setUserInfo(_id, name, email, address, coords, date)
+    //   .then((response) => {
+    //     if (response.status) {
+    //       dispatch(setUser(response.data));
+    //     } else {
+    //       console.log(response);
+    //       setIsFail(true);
+    //     }
+    //   })
+    //   .finally(() => {
+    //     setIsLoading(false);
+    //   });
   };
 
-  const handlePrevious = () => {
-    Keyboard.dismiss();
-    setCurrentStep(currentStep - 1);
-  };
+  const onChangeDate = ({ type }, selectedDate) => {
+    if (type == "set") {
+      setDate(selectedDate);
 
-  const updateProfile = async () => {
-    setIsLoading(true);
-    const formdata = new FormData();
-    if (image) {
-      formdata.append("file", {
-        uri: image,
-        type: mime.getType(image),
-        name: image.split("/").pop(),
-      });
-    }
-    formdata.append("name", name);
-    formdata.append("email", mail);
-    if (birthday.day != "" && birthday.month != "" && birthday.year != "") {
-      formdata.append(
-        "birthday",
-        birthday.day + "/" + birthday.month + "/" + birthday.year
-      );
-    }
+      if (Platform.OS == "android") {
+        setShowDatePicker(false);
 
-    try {
-      const response = await fetch(`${BASE_URL}/users//update/profile/${_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        body: formdata,
-      });
-      if (!response.ok) {
-        throw new Error("HTTP error " + response.status);
+        setDateOfBirth(formatDate(selectedDate));
       }
-      const data = await response.json();
-
-      dispatch(setUser(data));
-      setIsLoading(false);
-    } catch (err) {
-      setIsLoading(false);
-      if (err.response) {
-        Alert.alert("Problème interne");
-      } else {
-        Alert.alert("problème internet");
-      }
+    } else {
+      setShowDatePicker(false);
     }
   };
+
+  const confirmIOSDate = () => {
+    setDateOfBirth(formatDate(date));
+    setShowDatePicker(false);
+  };
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="black" />
+      </View>
+    );
+  }
 
   return (
-    <SafeAreaView className="flex-row flex-1 bg-white">
-      {isLoading && (
-        <View className="absolute w-full h-full justify-center items-center z-50 ">
-          <ActivityIndicator size="large" />
-        </View>
-      )}
+    <KeyboardAvoidingView
+      className="flex-1 "
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View className="flex-1 py-4 px-3 bg-indigo-50">
+        <ErrorModal visiblity={isFail} />
 
-      <SetName
-        image={image}
-        setImage={setImage}
-        name={name}
-        setName={setName}
-        handleNext={handleNext}
-        width={width}
-        slideAnimValue={slideAnimValue}
-      />
-      <SetMail
-        setBirthday={setBirthday}
-        handlePrevious={handlePrevious}
-        width={width}
-        slideAnimValue={slideAnimValue}
-        mail={mail}
-        setMail={setMail}
-        birthday={birthday}
-        updateProfile={updateProfile}
-      />
-    </SafeAreaView>
+        <View className="mt-3 flex-1">
+          <Text className="text-xl font-montserrat font-semibold text-gray-800">
+            Creation de profile
+          </Text>
+
+          <View className="mt-6">
+            <Text className="font-latoB text-lg text-gray-500">
+              Nom et Prenom
+            </Text>
+            <TextInput
+              placeholder="Full Name"
+              className=" py-2 px-2 bg-white rounded-md mt-2 text-gray-800 font-lato text-lg"
+              onChangeText={(text) => setName(text)}
+              ref={nameInput}
+            />
+          </View>
+          <View className="mt-4 ">
+            <Text className="font-latoB text-lg text-gray-500">Email</Text>
+            <TextInput
+              className=" py-2 px-2 bg-white rounded-md mt-2 text-gray-800 font-lato text-lg"
+              placeholder="Email"
+              onChangeText={(text) => setEmail(text)}
+              ref={emailInput}
+            />
+          </View>
+
+          <View className="mt-4 ">
+            <Text className="font-latoB text-lg text-gray-500">
+              Date de naissance
+            </Text>
+            {showDatePicker && (
+              <DateTimePicker
+                mode="date"
+                display="spinner"
+                value={date}
+                onChange={onChangeDate}
+                style={{ height: 120, marginTop: -10 }}
+                maximumDate={new Date("2015-1-1")}
+              />
+            )}
+            {showDatePicker && Platform.OS == "ios" && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around ",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(false)}
+                  className="bg-gray-400 rounded-md items-center px-4 py-2"
+                >
+                  <Text className="font-latoB text-lg text-gray-500">
+                    Annuler
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={confirmIOSDate}
+                  className="bg-pr rounded-md items-center px-4 py-2"
+                >
+                  <Text className="font-latoB text-lg text-gray-500">
+                    Confirmer
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {!showDatePicker && (
+              <Pressable onPress={() => setShowDatePicker(true)}>
+                <TextInput
+                  className="py-2 px-2 bg-white rounded-md mt-2 text-black font-lato text-lg"
+                  placeholder="25 / 10 / 1999"
+                  value={dateOfBirth}
+                  editable={false}
+                  onPressIn={() => setShowDatePicker(true)}
+                />
+              </Pressable>
+            )}
+          </View>
+        </View>
+        <TouchableOpacity
+          className={
+            name.length > 0
+              ? "bg-pr mt-10 py-3 rounded-md items-center"
+              : "bg-gray-400 mt-10 py-3 rounded-md items-center"
+          }
+          onPress={updateUser}
+          disabled={name.length > 0 ? false : true}
+        >
+          <Text className="font-latoB text-lg text-white">Continuer</Text>
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

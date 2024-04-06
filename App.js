@@ -7,7 +7,7 @@ import { getUserByToken } from "./api/user";
 import { useEffect, useState } from "react";
 import { selectToken, selectUser, setUserDataToken } from "./slices/userSlice";
 import AuthNavigator from "./navigation/AuthNavigator";
-import { getItemAsync } from "expo-secure-store";
+import { deleteItemAsync, getItemAsync } from "expo-secure-store";
 
 import "expo-dev-client";
 import ClientNavigator from "./navigation/client/ClientNavigator";
@@ -15,50 +15,60 @@ import ProfessionalNavigator from "./navigation/professional/ProfessionalNavigat
 import { Alert } from "react-native";
 import CustomStatusBar from "./components/CustomStatusBar";
 import * as SplashScreen from "expo-splash-screen";
+import {
+  Montserrat_400Regular,
+  Montserrat_600SemiBold,
+  Montserrat_400Regular_Italic,
+} from "@expo-google-fonts/montserrat";
+import { Lato_400Regular, Lato_700Bold } from "@expo-google-fonts/lato";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
   const [fontsLoaded] = useFonts({
     "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
     "Montserrat-Medium": require("./assets/fonts/Montserrat-Medium.ttf"),
     "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+    "Lato-Bold": require("./assets/fonts/Lato-Bold.ttf"),
+
+    "Lato-Regular": require("./assets/fonts/Lato-Regular.ttf"),
+    Montserrat_400Regular,
+    Montserrat_600SemiBold,
+    Lato_400Regular,
+    Lato_700Bold,
   });
 
   const RootNavigation = () => {
-    const dispatch = useDispatch();
-    const { account_type } = useSelector(selectUser);
-    const token = useSelector(selectToken);
+    // const dispatch = useDispatch();
 
-    async function restoreToken() {
-      try {
-        const userToken = await getItemAsync("token");
+    // const token = useSelector(selectToken);
 
-        if (userToken) {
-          const { data } = await getUserByToken(userToken);
+    // async function restoreToken() {
+    //   try {
+    //     const userToken = await getItemAsync("token");
 
-          if (data) {
-            dispatch(
-              setUserDataToken({ user: data.user, data, token: userToken })
-            );
-          }
-          setIsloading(false);
-        } else {
-          setIsloading(false);
-        }
-      } catch (error) {
-        if (error.response) {
-          Alert.alert("probleme interne");
-        } else {
-          Alert.alert("problème réseaux");
-        }
-      }
-    }
+    //     if (userToken) {
+    //       const { data } = await getUserByToken(userToken);
+    //       if (data) {
+    //         dispatch(setUserDataToken({ data: data, token: userToken }));
+    //       }
+    //       setIsloading(false);
+    //     } else {
+    //       setIsloading(false);
+    //     }
+    //   } catch (error) {
+    //     if (error.response) {
+    //       Alert.alert("probleme interne");
+    //     } else {
+    //       Alert.alert("problème ré ");
+    //     }
+    //   }
+    // }
 
-    useEffect(() => {
-      restoreToken();
-    }, []);
+    // useEffect(() => {
+    //   restoreToken();
+    // }, []);
     const appIsReady = async () => {
       await SplashScreen.hideAsync();
     };
@@ -70,13 +80,9 @@ export default function App() {
 
     return (
       <NavigationContainer>
-        {!token || !account_type ? (
-          <AuthNavigator />
-        ) : account_type === "client" ? (
-          <ClientNavigator />
-        ) : (
-          <ProfessionalNavigator />
-        )}
+        {/* <AuthNavigator /> */}
+        {/* {!token ? <AuthNavigator /> : <ClientNavigator />} */}
+        <ClientNavigator />
       </NavigationContainer>
     );
   };

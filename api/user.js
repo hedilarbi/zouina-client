@@ -3,10 +3,8 @@ import { BASE_URL } from "../assets/constants";
 
 export const createUser = (user) =>
   axios.post(`${BASE_URL}/users/create`, {
-    full_name: user.full_name,
     phone_number: user.phone_number,
-    password: user.password,
-    account_type: user.account_type,
+
     expo_token: user.expo_token,
   });
 
@@ -15,7 +13,7 @@ export const loginUser = (user) =>
     `${BASE_URL}/users/login`,
     {
       phone_number: user.phone_number,
-      password: user.password,
+
       expo_token: user.expo_token,
     },
     {

@@ -76,7 +76,7 @@ const OnBoarding = ({ navigation }) => {
           <Pagination data={slideItems} scrollX={scrollX} />
           <View className="  flex-row items-center justify-between px-5 mt-12">
             <TouchableOpacity
-              onPress={() => navigation.navigate("SignUp")}
+              onPress={() => navigation.navigate("Login")}
               className=""
             >
               <Text
@@ -87,7 +87,7 @@ const OnBoarding = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("SignIn")}
+              onPress={() => navigation.navigate("Login")}
               className="bg-pr rounded-md px-4 py-2"
             >
               <Text

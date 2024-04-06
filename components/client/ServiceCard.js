@@ -30,7 +30,7 @@ const ServiceCard = ({
   };
   return (
     <View
-      className="flex-1 flex-row bg-white h-28 rounded-md mb-4 items-center   "
+      className="flex-1 flex-row bg-white h-28 rounded-md mb-4 items-center"
       style={{
         backgroundColor: "#FFFFFF",
         borderRadius: 8,

@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: {},
   data: {},
   token: null,
 };
@@ -13,17 +12,12 @@ export const userSlice = createSlice({
     setUserDataToken: (state, action) => {
       return {
         ...state,
-        user: action.payload.user,
+
         data: action.payload.data,
         token: action.payload.token,
       };
     },
-    setUser: (state, action) => {
-      return {
-        ...state,
-        user: action.payload,
-      };
-    },
+
     setToken: (state, action) => {
       return {
         ...state,
@@ -41,13 +35,12 @@ export const userSlice = createSlice({
     },
 
     clearUserDataToken: (state) => {
-      state.user = {};
       state.data = {};
       state.token = null;
     },
 
-    clearUser: (state) => {
-      state.user = {};
+    clearData: (state) => {
+      state.data = {};
     },
   },
 });
@@ -57,12 +50,11 @@ export const {
   setData,
   setUserDataToken,
   clearUserDataToken,
-  setUser,
-  clearUser,
+
+  clearData,
   setAvailability,
 } = userSlice.actions;
 
-export const selectUser = (state) => state.user.user;
 export const selectToken = (state) => state.user.token;
 export const selectData = (state) => state.user.data;
 

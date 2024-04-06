@@ -59,9 +59,9 @@ export default function OnPrestationBanner({ prestationId }) {
 
   const HandleSendReview = async () => {
     try {
+      setModalVisible(false);
       await reviewPrestation(prestationId, rating, comment);
       await deleteItemAsync("prestationId");
-      setModalVisible(false);
     } catch (error) {
       if (error.response) {
         Alert.alert("Problème interne");
